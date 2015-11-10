@@ -1,4 +1,7 @@
 ﻿using System;
+using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
+using Elders.Cronus.AtomicAction.Redis.Config;
+using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.Userfull;
 using FakeItEasy;
 using Machine.Specifications;
@@ -29,10 +32,16 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.Smoke
         It should_not_have_an_exception_recorded = () => result.Errors.ShouldBeEmpty();
 
         It should_try_to_stored_the_previous_revision = () =>
-            A.CallTo(() => revisionStore.SaveRevision(id, revision - 1)).MustHaveHappened();
+            A.CallTo(() => revisionStore.SaveRevision(id, revision - 1, RedisAtomicActionOptions.Defaults.ShorTtl))
+                .MustHaveHappened();
 
         It should_try_to_increment_the_stored_revision = () =>
-            A.CallTo(() => revisionStore.SaveRevision(id, revision)).MustHaveHappened();
+            A.CallTo(() => revisionStore.SaveRevision(id, revision, RedisAtomicActionOptions.Defaults.ShorTtl))
+                .MustHaveHappened();
+
+        It should_try_to_persist_the_revision_for_a_long_period = () =>
+            A.CallTo(() => revisionStore.SaveRevision(id, revision, RedisAtomicActionOptions.Defaults.LongTtl))
+                .MustHaveHappened();
 
         It should_execute_the_given_action = () => actionExecuted.ShouldBeTrue();
         It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.Unlock(mutex)).MustHaveHappened();

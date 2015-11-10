@@ -2,7 +2,7 @@
 using Elders.Cronus.DomainModeling;
 using RedLock;
 
-namespace Elders.Cronus.AtomicAction.Redis
+namespace Elders.Cronus.AtomicAction.Redis.AggregateRootLock
 {
     public class RedisAggregateRootLock : IAggregateRootLock
     {

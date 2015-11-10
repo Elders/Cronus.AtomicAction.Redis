@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Elders.Cronus.AtomicAction.Config;
+using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
+using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using RedLock;
 
 namespace Elders.Cronus.AtomicAction.Redis.Config
 {
-
     public static class RedisAggregateRootAtomicActionSettingsExtensions
     {
         public static T SetLockEndPoints<T>(this T self, IEnumerable<IPEndPoint> endPoints)
@@ -16,6 +18,15 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
             return self;
         }
 
+        /// <summary>
+        /// https://en.wikipedia.org/wiki/Clock_drift
+        /// <para>clock_drift = (expiry_milliseconds * clock_drive_factor) + 2</para>
+        /// <para>http://redis.io/topics/distlock#safety-arguments</para>
+        /// </summary>
+        /// <typeparam name="T">IRedisAggregateRootAtomicActionSettings</typeparam>
+        /// <param name="self">The extended instance</param>
+        /// <param name="clockDriveFactor">The multiplication factor for the expiry milliseconds.</param>
+        /// <returns>The extended instance</returns>
         public static T SetLockClockDriveFactor<T>(this T self, double clockDriveFactor)
             where T : IRedisAggregateRootAtomicActionSettings
         {

@@ -1,4 +1,6 @@
 ﻿using System;
+using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
+using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.DomainModeling;
 using FakeItEasy;
 using Machine.Specifications;
