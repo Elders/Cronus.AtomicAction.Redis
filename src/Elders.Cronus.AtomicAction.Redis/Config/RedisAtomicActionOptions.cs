@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Elders.Cronus.AtomicAction.Redis
+namespace Elders.Cronus.AtomicAction.Redis.Config
 {
     public class RedisAtomicActionOptions
     {

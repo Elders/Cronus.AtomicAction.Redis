@@ -69,9 +69,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
+    <Compile Include="Config\IRedisAggregateRootAtomicActionSettings.cs" />
+    <Compile Include="Config\RedisAggregateRootAtomicActionSettingsExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Config\RedisAggregateRootAtomicActionSettings.cs" />
     <Compile Include="RedisAggregateRootLock.cs" />
-    <Compile Include="RedisAtomicActionOptions.cs" />
+    <Compile Include="Config\RedisAtomicActionOptions.cs" />
     <Compile Include="RedisRevisionStore.cs" />
     <Compile Include="RedisAggregateRootAtomicAction.cs" />
   </ItemGroup>

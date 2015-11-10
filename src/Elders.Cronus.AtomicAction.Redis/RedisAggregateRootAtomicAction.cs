@@ -1,4 +1,5 @@
 ﻿using System;
+using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.Userfull;
 
