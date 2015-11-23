@@ -26,7 +26,7 @@ namespace Elders.Cronus.AtomicAction.Redis.AggregateRootLock
 
             var lockresult = lockManager.Lock(aggregateRootId, ttl);
 
-            return lockresult.Locked ? lockresult.Mutex : null;
+            return lockresult.LockAcquired ? lockresult.Mutex : null;
         }
 
         public void Unlock(object mutex)
