@@ -10,19 +10,21 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
 {
     public class RedisRevisionStore : IRevisionStore
     {
-        private IList<ConnectionMultiplexer> connections;
-
-        private int Quorum { get { return (connections.Count / 2) + 1; } }
+        private ConnectionMultiplexer connection;
 
         public RedisRevisionStore(IEnumerable<IPEndPoint> redisEndpoints)
         {
-            connections = new List<ConnectionMultiplexer>();
+            if (ReferenceEquals(null, redisEndpoints)) throw new ArgumentNullException(nameof(redisEndpoints));
+
+            var options = new ConfigurationOptions();
+            options.AbortOnConnectFail = false;
 
             foreach (var endpoint in redisEndpoints)
             {
-                // TODO: this will throw if an endpoint is unreachable
-                connections.Add(ConnectionMultiplexer.Connect(endpoint.ToString()));
+                options.EndPoints.Add(endpoint);
             }
+
+            connection = ConnectionMultiplexer.Connect(options);
         }
 
         public Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision)
@@ -34,99 +36,72 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
         {
             if (ReferenceEquals(null, aggregateRootId)) throw new ArgumentNullException(nameof(aggregateRootId));
 
+            if (connection.IsConnected == false)
+                return Result.Error($"Unreachable endpoint '{connection.ClientName}'.");
+
             var revisionKey = CreateRedisRevisionKey(aggregateRootId);
-            var nodesWeNeedToProceed = Quorum;
 
-            foreach (var connection in connections)
+            try
             {
-                try
-                {
-                    if (connection.GetDatabase().StringSet(revisionKey, string.Join(",", revision, DateTime.UtcNow), expiry))
-                    {
-                        nodesWeNeedToProceed--;
-                    }
-                }
-                catch (Exception)
-                {
-                    // Current node is down. Continue trying to get a quorum.
-                    continue;
-                }
-            }
+                var result = connection.GetDatabase().StringSet(revisionKey, string.Join(",", revision, DateTime.UtcNow), expiry);
 
-            // This is a rollback; if we persisted the revision in some nodes but we do not have a quorum
-            if (nodesWeNeedToProceed > 0 && connections.Any())
+                return new Result<bool>(result);
+            }
+            catch (Exception ex)
             {
-                foreach (var connection in connections)
-                {
-                    connection.GetDatabase().KeyDelete(revisionKey);
-                }
-
-                return Result.Error($"Unable to store revision for '{aggregateRootId}'. Quorum: {Quorum}");
+                return Result.Error(ex);
             }
-
-            return Result.Success;
         }
 
         public Result<int> GetRevision(IAggregateRootId aggregateRootId)
         {
+            if (ReferenceEquals(null, aggregateRootId)) throw new ArgumentNullException(nameof(aggregateRootId));
+
+            if (connection.IsConnected == false)
+                return new Result<int>().WithError($"Unreachable endpoint '{connection.ClientName}'.");
+
             var revisionKey = CreateRedisRevisionKey(aggregateRootId);
-            var storedRevisions = new List<int>();
 
-            foreach (var connection in connections)
+            try
             {
-                try
-                {
-                    var value = connection.GetDatabase().StringGet(revisionKey);
-                    var revisionValue = ((string)value).Split(',').First();
-                    storedRevisions.Add(int.Parse(revisionValue));
-                }
-                catch (Exception)
-                {
-                    // Current node is down. Continue trying to get a quorum.
-                    continue;
-                }
+                var value = connection.GetDatabase().StringGet(revisionKey);
+                var revisionValue = ((string)value).Split(',').First();
+
+                return new Result<int>(int.Parse(revisionValue));
             }
-
-            var maxRevision = storedRevisions.Max();
-            if (storedRevisions.Count(x => x == maxRevision) < Quorum)
-                return new Result<int>(-1).WithError($"Inconsistent revisions for aggregate root '{aggregateRootId}'.");
-
-            return new Result<int>(maxRevision);
+            catch (Exception ex)
+            {
+                return new Result<int>().WithError(ex);
+            }
         }
 
         public Result<bool> HasRevision(IAggregateRootId aggregateRootId)
         {
+            if (ReferenceEquals(null, aggregateRootId)) throw new ArgumentNullException(nameof(aggregateRootId));
+
+            if (connection.IsConnected == false)
+                return Result.Error($"Unreachable endpoint '{connection.ClientName}'.");
+
             var revisionKey = CreateRedisRevisionKey(aggregateRootId);
-            var results = new List<bool>();
 
-            foreach (var connection in connections)
+            try
             {
-                try
-                {
-                    results.Add(connection.GetDatabase().KeyExists(revisionKey));
-                }
-                catch (Exception)
-                {
-                    // Current node is down. Continue trying to get a quorum.
-                    results.Add(false);
-                }
+                var result = connection.GetDatabase().KeyExists(revisionKey);
+
+                return new Result<bool>(result);
             }
-
-            var hasRevision = results.Count(x => x == true) >= Quorum;
-
-            return new Result<bool>(hasRevision);
+            catch (Exception ex)
+            {
+                return Result.Error(ex);
+            }
         }
 
         public void Dispose()
         {
-            if (connections != null)
+            if (connection != null)
             {
-                foreach (var connection in connections)
-                {
-                    connection.Dispose();
-                }
-
-                connections = null;
+                connection.Dispose();
+                connection = null;
             }
         }
 
