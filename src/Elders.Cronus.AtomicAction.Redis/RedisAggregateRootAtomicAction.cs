@@ -1,4 +1,7 @@
 ﻿using System;
+using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
+using Elders.Cronus.AtomicAction.Redis.Config;
+using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.Userfull;
 
@@ -49,7 +52,7 @@ namespace Elders.Cronus.AtomicAction.Redis
                         return Result.Error("action failed");
                     }
 
-                    // TODO: save revision with long ttl
+                    PersistRevision(arId, aggregateRootRevision);
 
                     return actionResult;
                 }
@@ -93,7 +96,12 @@ namespace Elders.Cronus.AtomicAction.Redis
 
         private Result<bool> SavePreviouseRevison(IAggregateRootId arId, int revision)
         {
-            return revisionStore.SaveRevision(arId, revision - 1);
+            return revisionStore.SaveRevision(arId, revision - 1, options.ShorTtl);
+        }
+
+        private Result<bool> PersistRevision(IAggregateRootId arId, int revision)
+        {
+            return revisionStore.SaveRevision(arId, revision, options.LongTtl);
         }
 
         private bool IsConsecutiveRevision(IAggregateRootId arId, int revision)
@@ -104,7 +112,7 @@ namespace Elders.Cronus.AtomicAction.Redis
 
         private Result<bool> IncrementRevision(IAggregateRootId arId, int newRevision)
         {
-            return revisionStore.SaveRevision(arId, newRevision); // TODO: save with short ttl
+            return revisionStore.SaveRevision(arId, newRevision, options.ShorTtl);
         }
 
         private Result<bool> ExecuteAction(Action action)
@@ -122,7 +130,7 @@ namespace Elders.Cronus.AtomicAction.Redis
 
         private void Rollback(IAggregateRootId arId, int revision)
         {
-            revisionStore.SaveRevision(arId, revision); // TODO: save with long ttl
+            revisionStore.SaveRevision(arId, revision, options.LongTtl); // TODO: save with long ttl
         }
 
         private void Unlock(object mutex)
@@ -151,7 +159,7 @@ namespace Elders.Cronus.AtomicAction.Redis
 
                 if (existingRevisionResult.Value == false)
                 {
-                    var prevRevResult = SavePreviouseRevison(arId, aggregateRootRevision); // TODO: save with short ttl
+                    var prevRevResult = SavePreviouseRevison(arId, aggregateRootRevision);
 
                     if (prevRevResult.IsNotSuccessful)
                         return false;

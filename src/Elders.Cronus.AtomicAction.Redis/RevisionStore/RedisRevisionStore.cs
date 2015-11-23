@@ -6,7 +6,7 @@ using Elders.Cronus.DomainModeling;
 using Elders.Cronus.Userfull;
 using StackExchange.Redis;
 
-namespace Elders.Cronus.AtomicAction.Redis
+namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
 {
     public class RedisRevisionStore : IRevisionStore
     {
@@ -27,6 +27,11 @@ namespace Elders.Cronus.AtomicAction.Redis
 
         public Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision)
         {
+            return SaveRevision(aggregateRootId, revision, null);
+        }
+
+        public Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision, TimeSpan? expiry)
+        {
             if (ReferenceEquals(null, aggregateRootId)) throw new ArgumentNullException(nameof(aggregateRootId));
 
             var revisionKey = CreateRedisRevisionKey(aggregateRootId);
@@ -36,7 +41,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             {
                 try
                 {
-                    if (connection.GetDatabase().StringSet(revisionKey, string.Join(",", revision, DateTime.UtcNow)))
+                    if (connection.GetDatabase().StringSet(revisionKey, string.Join(",", revision, DateTime.UtcNow), expiry))
                     {
                         nodesWeNeedToProceed--;
                     }
