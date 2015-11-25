@@ -146,6 +146,7 @@ namespace Elders.Cronus.AtomicAction.Redis
                 // TODO: log
             }
         }
+
         private bool CanExecuteAction(IAggregateRootId arId, int aggregateRootRevision)
         {
             try

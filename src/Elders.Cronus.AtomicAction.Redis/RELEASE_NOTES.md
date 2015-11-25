@@ -1,5 +1,5 @@
-#### 0.1.0-beta0001 - 23.11.2015
+#### 0.1.0-beta0001 - 25.11.2015
+* Updated RedLock reference
+* Added Example project
 * Redis cluster support
-
-#### 0.1.0-beta0001 - 10.11.2015
 * Fluent configuration for RedisAggregateRootAtomicAction
