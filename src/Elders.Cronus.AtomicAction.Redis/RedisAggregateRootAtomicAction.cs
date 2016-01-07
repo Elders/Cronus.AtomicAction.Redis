@@ -166,9 +166,9 @@ namespace Elders.Cronus.AtomicAction.Redis
                         return false;
                 }
 
-                var idConsecutiveRevision = IsConsecutiveRevision(arId, aggregateRootRevision);
+                var isConsecutiveRevision = IsConsecutiveRevision(arId, aggregateRootRevision);
 
-                if (idConsecutiveRevision)
+                if (isConsecutiveRevision)
                 {
                     return IncrementRevision(arId, aggregateRootRevision).IsSuccessful;
                 }
