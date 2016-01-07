@@ -2,7 +2,7 @@
 using Elders.Cronus.DomainModeling;
 using RedLock;
 
-namespace Elders.Cronus.AtomicAction.Redis
+namespace Elders.Cronus.AtomicAction.Redis.AggregateRootLock
 {
     public class RedisAggregateRootLock : IAggregateRootLock
     {
@@ -26,7 +26,7 @@ namespace Elders.Cronus.AtomicAction.Redis
 
             var lockresult = lockManager.Lock(aggregateRootId, ttl);
 
-            return lockresult.Locked ? lockresult.Mutex : null;
+            return lockresult.LockAcquired ? lockresult.Mutex : null;
         }
 
         public void Unlock(object mutex)

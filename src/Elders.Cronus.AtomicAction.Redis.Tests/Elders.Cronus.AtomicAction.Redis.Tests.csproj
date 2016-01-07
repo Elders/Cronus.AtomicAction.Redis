@@ -38,7 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elders.Cronus, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.2.4.0-beta0001\lib\net45-full\Elders.Cronus.dll</HintPath>
+      <HintPath>..\packages\Cronus.2.4.0-beta0002\lib\net45-full\Elders.Cronus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.DomainModeling, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -50,7 +50,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.RedLock, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RedLock.0.1.0-beta0002\lib\net45-full\Elders.RedLock.dll</HintPath>
+      <HintPath>..\packages\RedLock.0.1.0-beta0004\lib\net45-full\Elders.RedLock.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FakeItEasy, Version=1.25.3.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
@@ -96,6 +96,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestId.cs" />
     <Compile Include="TestAtomicActionFactory.cs" />
     <Compile Include="WhenRevisionStoreFails\When_checking_for_revision_dramatically_fails.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="WhenRevisionStoreFails\When_revision_store_cannot_get_a_revision.cs" />
     <Compile Include="WhenTheActionFails\When_the_action_throws_an_exception.cs" />
     <Compile Include="WithLockManagers\WithDramaticLockManager.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WhenLockManagerFails\When_acquiring_a_lock_dramatically_fails.cs" />
     <Compile Include="WhenLockManagerFails\When_lock_cannot_be_acquired.cs" />
     <Compile Include="WithLockManagers\WithLockManagerFailingToAcquireLock.cs" />
