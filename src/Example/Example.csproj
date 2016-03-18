@@ -32,12 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Elders.Cronus, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.2.4.0\lib\net45-full\Elders.Cronus.dll</HintPath>
+    <Reference Include="Elders.Cronus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.2.6.0-beta0003\lib\net45-full\Elders.Cronus.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Cronus.DomainModeling, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.2.2.1\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+    <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.DomainModeling.2.3.0-beta0001\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Multithreading.Scheduler, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -48,8 +48,8 @@
       <HintPath>..\packages\RedLock.0.1.0\lib\net45-full\Elders.RedLock.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -57,7 +57,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\StackExchange.Redis.1.0.481\lib\net45\StackExchange.Redis.dll</HintPath>
+      <HintPath>..\packages\StackExchange.Redis.1.0.488\lib\net45\StackExchange.Redis.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
