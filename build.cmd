@@ -59,5 +59,5 @@ IF NOT [%1]==[] (set TARGET="%1")
 SET SUMMARY="Cronus.AtomicAction.Redis"
 SET DESCRIPTION="Cronus.AtomicAction.Redis"
 
-%FAKE% %NYX% "target=RunTests" appName=Cronus.AtomicAction.Redis.Tests appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetpacage=Cronus.AtomicAction.Redis.Tests
-%FAKE% %NYX% "target=%TARGET%" appName=Cronus.AtomicAction.Redis appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetpackage=Cronus.AtomicAction.Redis
+%FAKE% %NYX% "target=RunTests" appName=Elders.Cronus.AtomicAction.Redis.Tests appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetpackage=Cronus.AtomicAction.Redis.Tests
+%FAKE% %NYX% "target=%TARGET%" appName=Elders.Cronus.AtomicAction.Redis appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetpackage=Cronus.AtomicAction.Redis
