@@ -130,7 +130,7 @@ namespace Elders.Cronus.AtomicAction.Redis
 
         private void Rollback(IAggregateRootId arId, int revision)
         {
-            revisionStore.SaveRevision(arId, revision, options.LongTtl); // TODO: save with long ttl
+            revisionStore.SaveRevision(arId, revision, options.LongTtl);
         }
 
         private void Unlock(object mutex)
