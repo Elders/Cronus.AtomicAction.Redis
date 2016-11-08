@@ -13,11 +13,9 @@ namespace Example
     {
         static void Main(string[] args)
         {
-            var endPoint1 = new IPEndPoint(IPAddress.Parse("192.168.99.100"), 1001);
-            var endPoint2 = new IPEndPoint(IPAddress.Parse("192.168.99.100"), 1002);
-            var endPoint3 = new IPEndPoint(IPAddress.Parse("192.168.99.100"), 1003);
+            var endPoint1 = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1001);
 
-            var endPoints = new[] { endPoint1, endPoint2, endPoint3 };
+            var endPoints = new[] { endPoint1 };
 
             var redlock = new RedisLockManager(endPoints);
             var aggregateRootLock = new RedisAggregateRootLock(redlock);
@@ -28,13 +26,22 @@ namespace Example
             options.ShorTtl = TimeSpan.FromSeconds(1);
 
             var atomicAction = new RedisAggregateRootAtomicAction(aggregateRootLock, revisionStore, options);
-            var id = new TestId();
+            var id = new HeadquarterId("e0846069-2730-4d3c-bc80-470d6a521d99", "elders");
 
             var result = atomicAction.Execute(id, 1, () => { });
 
             Console.WriteLine(result.IsSuccessful);
             Console.WriteLine(result.Value);
         }
+    }
+
+    public class HeadquarterId : StringTenantId
+    {
+        HeadquarterId() { }
+
+        public HeadquarterId(StringTenantId id) : base(id, "Headquarter") { }
+
+        public HeadquarterId(string id, string tenant) : base(id, "Headquarter", tenant) { }
     }
 
     class TestId : GuidId

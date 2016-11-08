@@ -65,6 +65,8 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
             try
             {
                 var value = connection.GetDatabase().StringGet(revisionKey);
+                if (value.HasValue == false)
+                    return new Result<int>().WithError($"Missing value for {revisionKey} '{connection.ClientName}'.");
                 var revisionValue = ((string)value).Split(',').First();
 
                 return new Result<int>(int.Parse(revisionValue));

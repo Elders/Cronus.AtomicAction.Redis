@@ -1,3 +1,7 @@
+#### 0.2.0-beta0002 - 08.11.2016
+* Expose additional settings
+* Fixed NullReferenceException when there is no value for key in redis
+
 #### 0.2.0-beta0001 - 18.03.2016
 * Cronus.AtomicAction.Redis with latest Cronus reference
 
