@@ -13,9 +13,15 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
             this.SetLockRetryCount(RedLockOptions.Default.LockRetryCount);
             this.SetLockRetryDelay(RedLockOptions.Default.LockRetryDelay);
             this.SetLockTtl(RedisAtomicActionOptions.Defaults.LockTtl);
+            this.SetShortTtl(RedisAtomicActionOptions.Defaults.ShorTtl);
+            this.SetLongTtl(RedisAtomicActionOptions.Defaults.LongTtl);
         }
 
         TimeSpan IRedisAggregateRootAtomicActionSettings.LockTtl { get; set; }
+
+        TimeSpan IRedisAggregateRootAtomicActionSettings.ShorTtl { get; set; }
+
+        TimeSpan IRedisAggregateRootAtomicActionSettings.LongTtl { get; set; }
 
         IEnumerable<IPEndPoint> IRedisAggregateRootAtomicActionSettings.EndPoints { get; set; }
 

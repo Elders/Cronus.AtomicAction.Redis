@@ -8,6 +8,10 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
     {
         TimeSpan LockTtl { get; set; }
 
+        TimeSpan ShorTtl { get; set; }
+
+        TimeSpan LongTtl { get; set; }
+
         IEnumerable<IPEndPoint> EndPoints { get; set; }
 
         double ClockDriveFactor { get; set; }

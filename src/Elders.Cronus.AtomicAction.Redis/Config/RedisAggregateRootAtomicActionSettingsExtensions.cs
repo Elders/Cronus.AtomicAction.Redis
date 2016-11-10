@@ -54,6 +54,18 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
             return self;
         }
 
+        public static T SetShortTtl<T>(this T self, TimeSpan ttl) where T : IRedisAggregateRootAtomicActionSettings
+        {
+            self.ShorTtl = ttl;
+            return self;
+        }
+
+        public static T SetLongTtl<T>(this T self, TimeSpan ttl) where T : IRedisAggregateRootAtomicActionSettings
+        {
+            self.LongTtl = ttl;
+            return self;
+        }
+
         public static T UseRedis<T>(this T self, Action<RedisAggregateRootAtomicActionSettings> configure)
             where T : IAggregateRootAtomicActionSettings
         {
@@ -78,7 +90,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
             var redisAggregateRootLock = new RedisAggregateRootLock(redLock);
 
             var revisionStore = new RedisRevisionStore(parsed.EndPoints);
-            var redisAtomicActionOptions = new RedisAtomicActionOptions { LockTtl = parsed.LockTtl };
+            var redisAtomicActionOptions = new RedisAtomicActionOptions { LockTtl = parsed.LockTtl, ShorTtl = parsed.ShorTtl, LongTtl = parsed.LongTtl };
 
             self.AggregateRootAtomicAtion =
                 new RedisAggregateRootAtomicAction(redisAggregateRootLock, revisionStore, redisAtomicActionOptions);

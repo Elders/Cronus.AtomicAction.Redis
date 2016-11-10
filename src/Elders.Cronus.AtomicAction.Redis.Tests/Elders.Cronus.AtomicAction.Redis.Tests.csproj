@@ -38,15 +38,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elders.Cronus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.2.6.0-beta0003\lib\net45-full\Elders.Cronus.dll</HintPath>
+      <HintPath>..\packages\Cronus.3.0.2\lib\net45-full\Elders.Cronus.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.2.3.0-beta0001\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+    <Reference Include="Elders.Cronus.DomainModeling, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.DomainModeling.3.1.4\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Multithreading.Scheduler, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Multithreading.Scheduler.1.1.0\lib\net45-full\Elders.Multithreading.Scheduler.dll</HintPath>
+    <Reference Include="Elders.Multithreading.Scheduler, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multithreading.Scheduler.1.1.2\lib\net45-full\Elders.Multithreading.Scheduler.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.RedLock, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -96,7 +96,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestId.cs" />
     <Compile Include="TestAtomicActionFactory.cs" />
     <Compile Include="WhenRevisionStoreFails\When_checking_for_revision_dramatically_fails.cs" />
@@ -119,7 +118,9 @@
       <Name>Elders.Cronus.AtomicAction.Redis</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
