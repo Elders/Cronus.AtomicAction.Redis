@@ -1,3 +1,6 @@
+#### 0.2.1 - 21.07.2017
+* Improves error logging
+
 #### 0.2.0 - 10.11.2016
 * Update Cronus to 3.0.2
 * Expose additional settings

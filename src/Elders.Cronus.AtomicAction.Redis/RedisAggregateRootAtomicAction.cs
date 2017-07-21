@@ -37,19 +37,20 @@ namespace Elders.Cronus.AtomicAction.Redis
         {
             var lockResult = Lock(arId, options.LockTtl);
             if (lockResult.IsNotSuccessful)
-                return Result.Error("lock failed");
+                return Result.Error($"Lock failed becouse of: {lockResult.Errors?.MakeJustOneException()}");
 
             try
             {
-                if (CanExecuteAction(arId, aggregateRootRevision))
+
+                var canExecuteActionResult = CanExecuteAction(arId, aggregateRootRevision);
+                if (canExecuteActionResult.IsSuccessful == true)
                 {
                     var actionResult = ExecuteAction(action);
 
                     if (actionResult.IsNotSuccessful)
                     {
                         Rollback(arId, aggregateRootRevision - 1);
-
-                        return Result.Error("action failed");
+                        return Result.Error($"Action faile becouse of: {actionResult.Errors?.MakeJustOneException()}");
                     }
 
                     PersistRevision(arId, aggregateRootRevision);
@@ -57,7 +58,7 @@ namespace Elders.Cronus.AtomicAction.Redis
                     return actionResult;
                 }
 
-                return Result.Error("unable to execute action");
+                return new Result<bool>(false).WithError("Unable to execute action").WithError(canExecuteActionResult.Errors?.MakeJustOneException());
             }
             catch (Exception ex)
             {
@@ -79,7 +80,7 @@ namespace Elders.Cronus.AtomicAction.Redis
                 mutex = aggregateRootLock.Lock(arId, ttl);
 
                 if (ReferenceEquals(null, mutex))
-                    return new Result<object>().WithError("failed lock");
+                    return new Result<object>().WithError("Unable to create mutex.");
 
                 return new Result<object>(mutex);
             }
@@ -147,15 +148,49 @@ namespace Elders.Cronus.AtomicAction.Redis
             }
         }
 
-        private bool CanExecuteAction(IAggregateRootId arId, int aggregateRootRevision)
+        //private bool CanExecuteAction(IAggregateRootId arId, int aggregateRootRevision)
+        //{
+        //    try
+        //    {
+        //        var existingRevisionResult = CheckForExistingRevision(arId);
+
+        //        if (existingRevisionResult.IsNotSuccessful)
+        //        {
+        //            return false; // TODO: log
+        //        }
+
+        //        if (existingRevisionResult.Value == false)
+        //        {
+        //            var prevRevResult = SavePreviouseRevison(arId, aggregateRootRevision);
+
+        //            if (prevRevResult.IsNotSuccessful)
+        //                return false;
+        //        }
+
+        //        var isConsecutiveRevision = IsConsecutiveRevision(arId, aggregateRootRevision);
+
+        //        if (isConsecutiveRevision)
+        //        {
+        //            return IncrementRevision(arId, aggregateRootRevision).IsSuccessful;
+        //        }
+
+        //        return false;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return false;
+        //    }
+        //}
+
+
+        Result<bool> CanExecuteAction(IAggregateRootId arId, int aggregateRootRevision)
         {
             try
             {
                 var existingRevisionResult = CheckForExistingRevision(arId);
-
                 if (existingRevisionResult.IsNotSuccessful)
                 {
-                    return false; // TODO: log
+                    return new Result<bool>(false).WithError("ExistingRevisionResult is false.").WithError(existingRevisionResult.Errors?.MakeJustOneException()); // false
                 }
 
                 if (existingRevisionResult.Value == false)
@@ -163,23 +198,23 @@ namespace Elders.Cronus.AtomicAction.Redis
                     var prevRevResult = SavePreviouseRevison(arId, aggregateRootRevision);
 
                     if (prevRevResult.IsNotSuccessful)
-                        return false;
+                        return new Result<bool>(false).WithError("PrevRevResult is false.").WithError(prevRevResult.Errors?.MakeJustOneException()); // false
                 }
 
                 var isConsecutiveRevision = IsConsecutiveRevision(arId, aggregateRootRevision);
-
                 if (isConsecutiveRevision)
                 {
-                    return IncrementRevision(arId, aggregateRootRevision).IsSuccessful;
+                    return IncrementRevision(arId, aggregateRootRevision);  // true / false
                 }
 
-                return false;
+                return new Result<bool>(false).WithError("Revisions were not consecutive"); // false
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return new Result<bool>(false).WithError(ex);
             }
         }
+
 
         public void Dispose()
         {
