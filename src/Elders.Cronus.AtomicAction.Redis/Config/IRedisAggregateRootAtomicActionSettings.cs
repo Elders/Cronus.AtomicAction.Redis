@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
+using StackExchange.Redis;
 
 namespace Elders.Cronus.AtomicAction.Redis.Config
 {
@@ -12,7 +11,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
 
         TimeSpan LongTtl { get; set; }
 
-        IEnumerable<IPEndPoint> EndPoints { get; set; }
+        string ConnectionString { get; set; }
 
         double ClockDriveFactor { get; set; }
 

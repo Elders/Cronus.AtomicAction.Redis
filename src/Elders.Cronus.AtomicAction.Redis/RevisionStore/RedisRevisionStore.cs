@@ -12,19 +12,13 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
     {
         private ConnectionMultiplexer connection;
 
-        public RedisRevisionStore(IEnumerable<IPEndPoint> redisEndpoints)
+        public RedisRevisionStore(string connectionString)
         {
-            if (ReferenceEquals(null, redisEndpoints)) throw new ArgumentNullException(nameof(redisEndpoints));
+            if (string.IsNullOrEmpty(connectionString)) throw new ArgumentNullException(nameof(connectionString));
 
-            var options = new ConfigurationOptions();
-            options.AbortOnConnectFail = false;
+            var configurationOptions = ConfigurationOptions.Parse(connectionString);
 
-            foreach (var endpoint in redisEndpoints)
-            {
-                options.EndPoints.Add(endpoint);
-            }
-
-            connection = ConnectionMultiplexer.Connect(options);
+            connection = ConnectionMultiplexer.Connect(configurationOptions);
         }
 
         public Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision)

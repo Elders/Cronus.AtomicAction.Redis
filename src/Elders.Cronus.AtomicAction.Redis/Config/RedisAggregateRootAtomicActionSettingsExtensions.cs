@@ -6,15 +6,17 @@ using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using RedLock;
+using StackExchange.Redis;
 
 namespace Elders.Cronus.AtomicAction.Redis.Config
 {
     public static class RedisAggregateRootAtomicActionSettingsExtensions
     {
-        public static T SetLockEndPoints<T>(this T self, IEnumerable<IPEndPoint> endPoints)
+        public static T SetConnectionString<T>(this T self, string connectionString)
             where T : IRedisAggregateRootAtomicActionSettings
         {
-            self.EndPoints = endPoints;
+            var options = connectionString;
+            self.ConnectionString = options;
             return self;
         }
 
@@ -83,13 +85,13 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
                 LockRetryDelay = parsed.LockRetryDelay
             };
 
-            if (ReferenceEquals(null, parsed.EndPoints) || parsed.EndPoints.Any() == false)
-                throw new Exception("Redis end points not specified.");
+            if (string.IsNullOrEmpty(parsed.ConnectionString))
+                throw new Exception("Redis ConnectionString is not specified.");
 
-            var redLock = new RedisLockManager(redLockOptions, parsed.EndPoints);
+            var redLock = new RedisLockManager(redLockOptions, parsed.ConnectionString);
             var redisAggregateRootLock = new RedisAggregateRootLock(redLock);
 
-            var revisionStore = new RedisRevisionStore(parsed.EndPoints);
+            var revisionStore = new RedisRevisionStore(parsed.ConnectionString);
             var redisAtomicActionOptions = new RedisAtomicActionOptions { LockTtl = parsed.LockTtl, ShorTtl = parsed.ShorTtl, LongTtl = parsed.LongTtl };
 
             self.AggregateRootAtomicAtion =
