@@ -6,6 +6,7 @@ using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.DomainModeling;
 using RedLock;
+using StackExchange.Redis;
 
 namespace Example
 {
@@ -17,9 +18,11 @@ namespace Example
 
             var endPoints = new[] { endPoint1 };
 
-            var redlock = new RedisLockManager(endPoints);
+            var connectionString = "docker-local.com:6379,abortConnect=False";
+
+            var redlock = new RedisLockManager(connectionString);
             var aggregateRootLock = new RedisAggregateRootLock(redlock);
-            var revisionStore = new RedisRevisionStore(endPoints);
+            var revisionStore = new RedisRevisionStore(connectionString);
 
             var options = new RedisAtomicActionOptions();
             options.LockTtl = TimeSpan.FromSeconds(1);

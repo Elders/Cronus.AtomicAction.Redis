@@ -1,3 +1,6 @@
+#### 0.3.0 - 27.09.2017
+* Changed UseRedis to be configured with connection string instead of Endpoints
+
 #### 0.2.1 - 21.07.2017
 * Improves error logging
 
