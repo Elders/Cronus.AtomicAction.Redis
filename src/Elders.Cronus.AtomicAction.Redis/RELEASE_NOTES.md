@@ -1,3 +1,6 @@
+#### 0.3.1 - 21.11.2017
+* Removes log4net dependency
+
 #### 0.3.0 - 27.09.2017
 * Changed UseRedis to be configured with connection string instead of Endpoints
 
