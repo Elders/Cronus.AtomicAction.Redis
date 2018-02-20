@@ -1,5 +1,4 @@
 ﻿using System;
-using Elders.Cronus.DomainModeling;
 
 namespace Elders.Cronus.AtomicAction.Redis.AggregateRootLock
 {

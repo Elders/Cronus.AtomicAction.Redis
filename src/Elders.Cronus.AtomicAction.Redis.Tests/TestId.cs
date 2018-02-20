@@ -1,11 +1,10 @@
 ﻿using System;
-using Elders.Cronus.DomainModeling;
 
 namespace Elders.Cronus.AtomicAction.Redis.Tests
 {
-    public class TestId : GuidId
+    public class TestId : StringTenantId
     {
         public TestId() : this(Guid.NewGuid()) { }
-        public TestId(Guid id) : base(id, "redis-test") { }
+        public TestId(Guid id) : base(id.ToString(), "redis-test", "elders") { }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Net;
+using Elders.Cronus;
 using Elders.Cronus.AtomicAction.Redis;
 using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
-using Elders.Cronus.DomainModeling;
 using RedLock;
-using StackExchange.Redis;
 
 namespace Example
 {
@@ -47,9 +46,9 @@ namespace Example
         public HeadquarterId(string id, string tenant) : base(id, "Headquarter", tenant) { }
     }
 
-    class TestId : GuidId
+    class TestId : StringTenantId
     {
-        public TestId() : base(Guid.Parse("e0846069-2730-4d3c-bc80-470d6a521d99"), "testid")
+        public TestId() : base("e0846069-2730-4d3c-bc80-470d6a521d99", "testid", "elders")
         {
         }
     }

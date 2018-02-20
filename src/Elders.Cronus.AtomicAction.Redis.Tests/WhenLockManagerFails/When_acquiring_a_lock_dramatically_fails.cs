@@ -1,5 +1,4 @@
 ﻿using System;
-using Elders.Cronus.DomainModeling;
 using Elders.Cronus.AtomicAction.Redis.Tests.WithLockManagers;
 using FakeItEasy;
 using Machine.Specifications;
