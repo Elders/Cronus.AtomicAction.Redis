@@ -1,3 +1,6 @@
+#### 1.0.0 - 20.02.2018
+* Stable
+
 #### 0.3.1 - 21.11.2017
 * Removes log4net dependency
 

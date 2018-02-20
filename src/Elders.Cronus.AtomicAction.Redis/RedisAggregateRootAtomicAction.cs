@@ -1,14 +1,16 @@
 ﻿using System;
 using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
 using Elders.Cronus.AtomicAction.Redis.Config;
+using Elders.Cronus.AtomicAction.Redis.Logging;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
-using Elders.Cronus.DomainModeling;
 using Elders.Cronus.Userfull;
 
 namespace Elders.Cronus.AtomicAction.Redis
 {
     public class RedisAggregateRootAtomicAction : IAggregateRootAtomicAction
     {
+        static readonly ILog log = LogProvider.GetLogger(typeof(RedisAggregateRootAtomicAction));
+
         private IRevisionStore revisionStore;
 
         private IAggregateRootLock aggregateRootLock;
@@ -62,7 +64,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             }
             catch (Exception ex)
             {
-                // TODO log
+                log.ErrorException("Unable to execute action", ex);
                 return Result.Error(ex);
             }
             finally
@@ -144,7 +146,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             }
             catch (Exception ex)
             {
-                // TODO: log
+                log.ErrorException("Unable to unlock", ex);
             }
         }
 
