@@ -24,7 +24,7 @@
         <PackageReference Include="LibLog" Version="4.2.6" />
         <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
         <PackageReference Include="Cronus" Version="4.0.4" />
-        <PackageReference Include="RedLock" Version="2.0.0" />
+        <PackageReference Include="RedLock" Version="2.0.1" />
     </ItemGroup>
 
     <!--net45-->
