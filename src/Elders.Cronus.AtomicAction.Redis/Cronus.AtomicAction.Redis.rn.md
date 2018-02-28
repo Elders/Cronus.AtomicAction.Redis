@@ -1,3 +1,6 @@
+#### 1.0.2 - 28.02.2018
+* Updates packages
+
 #### 1.0.1 - 20.02.2018
 * Updates packages
 
