@@ -1,5 +1,4 @@
 ﻿using System;
-using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.AtomicAction.Redis.Logging;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
@@ -13,16 +12,16 @@ namespace Elders.Cronus.AtomicAction.Redis
 
         private IRevisionStore revisionStore;
 
-        private IAggregateRootLock aggregateRootLock;
+        private ILock aggregateRootLock;
 
         private RedisAtomicActionOptions options;
 
-        public RedisAggregateRootAtomicAction(IAggregateRootLock aggregateRootLock, IRevisionStore revisionStore) :
+        public RedisAggregateRootAtomicAction(ILock aggregateRootLock, IRevisionStore revisionStore) :
             this(aggregateRootLock, revisionStore, RedisAtomicActionOptions.Defaults)
         {
         }
 
-        public RedisAggregateRootAtomicAction(IAggregateRootLock aggregateRootLock,
+        public RedisAggregateRootAtomicAction(ILock aggregateRootLock,
                                               IRevisionStore revisionStore,
                                               RedisAtomicActionOptions options)
         {
@@ -73,22 +72,20 @@ namespace Elders.Cronus.AtomicAction.Redis
             }
         }
 
-        private Result<object> Lock(IAggregateRootId arId, TimeSpan ttl)
+        private Result<string> Lock(IAggregateRootId arId, TimeSpan ttl)
         {
-            object mutex;
-
             try
             {
-                mutex = aggregateRootLock.Lock(arId, ttl);
+                var resource = Convert.ToBase64String(arId.RawId);
 
-                if (ReferenceEquals(null, mutex))
-                    return new Result<object>().WithError("Unable to create mutex.");
+                if (aggregateRootLock.Lock(resource, ttl) == false)
+                    return new Result<string>().WithError($"Failed to lock aggregate with id: {arId.Urn.Value}");
 
-                return new Result<object>(mutex);
+                return new Result<string>(resource);
             }
             catch (Exception ex)
             {
-                return new Result<object>().WithError(ex);
+                return new Result<string>().WithError(ex);
             }
         }
 
@@ -136,54 +133,19 @@ namespace Elders.Cronus.AtomicAction.Redis
             revisionStore.SaveRevision(arId, revision, options.LongTtl);
         }
 
-        private void Unlock(object mutex)
+        private void Unlock(string resource)
         {
-            if (ReferenceEquals(null, mutex)) return;
+            if (string.IsNullOrEmpty(resource)) return;
 
             try
             {
-                aggregateRootLock.Unlock(mutex);
+                aggregateRootLock.Unlock(resource);
             }
             catch (Exception ex)
             {
                 log.ErrorException("Unable to unlock", ex);
             }
         }
-
-        //private bool CanExecuteAction(IAggregateRootId arId, int aggregateRootRevision)
-        //{
-        //    try
-        //    {
-        //        var existingRevisionResult = CheckForExistingRevision(arId);
-
-        //        if (existingRevisionResult.IsNotSuccessful)
-        //        {
-        //            return false; // TODO: log
-        //        }
-
-        //        if (existingRevisionResult.Value == false)
-        //        {
-        //            var prevRevResult = SavePreviouseRevison(arId, aggregateRootRevision);
-
-        //            if (prevRevResult.IsNotSuccessful)
-        //                return false;
-        //        }
-
-        //        var isConsecutiveRevision = IsConsecutiveRevision(arId, aggregateRootRevision);
-
-        //        if (isConsecutiveRevision)
-        //        {
-        //            return IncrementRevision(arId, aggregateRootRevision).IsSuccessful;
-        //        }
-
-        //        return false;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return false;
-        //    }
-        //}
-
 
         Result<bool> CanExecuteAction(IAggregateRootId arId, int aggregateRootRevision)
         {
@@ -216,7 +178,6 @@ namespace Elders.Cronus.AtomicAction.Redis
                 return new Result<bool>(false).WithError(ex);
             }
         }
-
 
         public void Dispose()
         {

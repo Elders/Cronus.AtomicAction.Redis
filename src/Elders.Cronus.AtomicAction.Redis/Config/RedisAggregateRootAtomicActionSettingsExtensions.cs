@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using RedLock;
-using StackExchange.Redis;
 
 namespace Elders.Cronus.AtomicAction.Redis.Config
 {
