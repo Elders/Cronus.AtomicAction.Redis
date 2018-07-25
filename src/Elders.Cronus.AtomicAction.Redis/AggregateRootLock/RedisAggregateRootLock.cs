@@ -3,7 +3,7 @@ using RedLock;
 
 namespace Elders.Cronus.AtomicAction.Redis.AggregateRootLock
 {
-    public class RedisAggregateRootLock : IAggregateRootLock
+    public class RedisAggregateRootLock : ILock
     {
         private IRedisLockManager lockManager;
 
@@ -14,29 +14,27 @@ namespace Elders.Cronus.AtomicAction.Redis.AggregateRootLock
             this.lockManager = lockManager;
         }
 
-        public bool IsLocked(IAggregateRootId aggregateRootId)
+        public bool IsLocked(string resource)
         {
-            return lockManager.IsLocked(aggregateRootId);
+            if (string.IsNullOrEmpty(resource)) throw new ArgumentNullException(nameof(resource));
+
+            return lockManager.IsLocked(resource);
         }
 
-        public object Lock(IAggregateRootId aggregateRootId, TimeSpan ttl)
+        public bool Lock(string resource, TimeSpan ttl)
         {
-            if (ReferenceEquals(null, aggregateRootId)) throw new ArgumentNullException(nameof(aggregateRootId));
+            if (string.IsNullOrEmpty(resource)) throw new ArgumentNullException(nameof(resource));
 
-            var lockresult = lockManager.Lock(aggregateRootId, ttl);
+            var lockresult = lockManager.Lock(resource, ttl);
 
-            return lockresult.LockAcquired ? lockresult.Mutex : null;
+            return lockresult;
         }
 
-        public void Unlock(object mutex)
+        public void Unlock(string resource)
         {
-            if (ReferenceEquals(null, mutex)) return;
+            if (string.IsNullOrEmpty(resource)) throw new ArgumentNullException(nameof(resource));
 
-            lockManager.Unlock(mutex as Mutex);
-        }
-
-        public void Dispose()
-        {
+            lockManager.Unlock(resource);
         }
     }
 }

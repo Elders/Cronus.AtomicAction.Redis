@@ -1,6 +1,5 @@
 ﻿using System;
 using RedLock;
-using StackExchange.Redis;
 
 namespace Elders.Cronus.AtomicAction.Redis.Config
 {

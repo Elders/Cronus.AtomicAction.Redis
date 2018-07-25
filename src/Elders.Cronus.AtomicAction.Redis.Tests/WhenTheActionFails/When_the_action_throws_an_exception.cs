@@ -1,11 +1,9 @@
 ﻿using System;
-using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.Userfull;
 using FakeItEasy;
 using Machine.Specifications;
-using RedLock;
 
 namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenTheActionFails
 {
@@ -14,13 +12,12 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenTheActionFails
     {
         Establish context = () =>
         {
-            mutex = A.Fake<Mutex>();
             revisionStore = A.Fake<IRevisionStore>();
             A.CallTo(() => revisionStore.HasRevision(id)).Returns(Userfull.Result.Success);
             A.CallTo(() => revisionStore.GetRevision(id)).Returns(new Result<int>(1));
 
-            lockManager = A.Fake<IAggregateRootLock>();
-            A.CallTo(() => lockManager.Lock(id, A<TimeSpan>.Ignored)).Returns(mutex);
+            lockManager = A.Fake<ILock>();
+            A.CallTo(() => lockManager.Lock(Convert.ToBase64String(id.RawId), A<TimeSpan>.Ignored)).Returns(true);
 
             service = TestAtomicActionFactory.New(lockManager, revisionStore);
         };
@@ -43,11 +40,10 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenTheActionFails
                 .MustNotHaveHappened();
 
 
-        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.Unlock(mutex)).MustHaveHappened();
+        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.Unlock(Convert.ToBase64String(id.RawId))).MustHaveHappened();
 
-        static Mutex mutex;
         static TestId id = new TestId();
-        static IAggregateRootLock lockManager;
+        static ILock lockManager;
         static IRevisionStore revisionStore;
         static Result<bool> result;
         static IAggregateRootAtomicAction service;

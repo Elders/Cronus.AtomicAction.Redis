@@ -1,11 +1,9 @@
 ﻿using System;
-using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.Userfull;
 using FakeItEasy;
 using Machine.Specifications;
-using RedLock;
 
 namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenRevisionStoreFails
 {
@@ -15,9 +13,8 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenRevisionStoreFails
         Establish context = () =>
         {
             id = new TestId();
-            mutex = A.Fake<Mutex>();
-            lockManager = A.Fake<IAggregateRootLock>();
-            A.CallTo(() => lockManager.Lock(id, A<TimeSpan>.Ignored)).Returns(mutex);
+            lockManager = A.Fake<ILock>();
+            A.CallTo(() => lockManager.Lock(Convert.ToBase64String(id.RawId), A<TimeSpan>.Ignored)).Returns(true);
 
             revisionStore = A.Fake<IRevisionStore>();
             A.CallTo(() => revisionStore.HasRevision(id)).Returns(Userfull.Result.Success);
@@ -31,18 +28,17 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenRevisionStoreFails
         It should_return__false__as_a_result = () => result.Value.ShouldBeFalse();
         It should_have_an_exception_recorded = () => result.Errors.ShouldNotBeEmpty();
         It should_not_execute_the_given_action = () => actionExecuted.ShouldBeFalse();
-        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.Unlock(mutex)).MustHaveHappened();
+        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.Unlock(Convert.ToBase64String(id.RawId))).MustHaveHappened();
         It should_not_try_to_persist_the_revision_for_a_long_period = () =>
             A.CallTo(() => revisionStore.SaveRevision(id, 1, RedisAtomicActionOptions.Defaults.LongTtl))
                 .MustNotHaveHappened();
 
         static string message = "cannot get revision";
         static TestId id;
-        static IAggregateRootLock lockManager;
+        static ILock lockManager;
         static IRevisionStore revisionStore;
         static IAggregateRootAtomicAction service;
         static Result<bool> result;
-        static Mutex mutex;
         static Action action = () => { actionExecuted = true; };
         static bool actionExecuted = false;
     }

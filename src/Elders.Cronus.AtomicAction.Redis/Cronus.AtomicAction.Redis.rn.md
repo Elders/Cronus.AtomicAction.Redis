@@ -1,3 +1,6 @@
+#### 2.0.0 - 25.07.2018
+* Update Redlock to 3.0.0
+
 #### 1.0.2 - 28.02.2018
 * Updates packages
 
