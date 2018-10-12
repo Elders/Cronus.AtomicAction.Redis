@@ -1,3 +1,7 @@
+#### 5.0.0 - 12.10.2018
+* Updates Redlock to 4.0.0
+* Updates LibLog to 5.0.2
+
 #### 2.0.0 - 25.07.2018
 * Update Redlock to 3.0.0
 
