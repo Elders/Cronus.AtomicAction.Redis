@@ -2,7 +2,7 @@
 using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
-using RedLock;
+using Elders.RedLock;
 
 namespace Elders.Cronus.AtomicAction.Redis.Config
 {

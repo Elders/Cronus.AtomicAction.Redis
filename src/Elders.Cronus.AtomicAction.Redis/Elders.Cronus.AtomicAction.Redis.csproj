@@ -1,43 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
 
-    <!--Nuget-->
-    <PropertyGroup>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <PackageId>Cronus.AtomicAction.Redis</PackageId>
-        <PackageLicenseUrl>https://github.com/Elders/Cronus.AtomicAction.Redis/blob/master/LICENSE</PackageLicenseUrl>
-        <PackageProjectUrl>https://github.com/Elders/Cronus.AtomicAction.Redis</PackageProjectUrl>
-        <PackageTags>distrubited lock redis redlock cronus</PackageTags>
-        <RepositoryUrl>https://github.com/Elders/Cronus.AtomicAction.Redis</RepositoryUrl>
-        <RepositoryType>Framework</RepositoryType>
-        <Authors>Elders</Authors>
-        <PackageIconUrl>https://raw.githubusercontent.com/Elders/logo/master/cronus/frame.png</PackageIconUrl>
-    </PropertyGroup>
+  <!--Nuget-->
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PackageId>Cronus.AtomicAction.Redis</PackageId>
+    <PackageLicenseUrl>https://github.com/Elders/Cronus.AtomicAction.Redis/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Elders/Cronus.AtomicAction.Redis</PackageProjectUrl>
+    <PackageTags>distrubited lock redis redlock cronus</PackageTags>
+    <RepositoryUrl>https://github.com/Elders/Cronus.AtomicAction.Redis</RepositoryUrl>
+    <RepositoryType>Framework</RepositoryType>
+    <Authors>Elders</Authors>
+    <PackageIconUrl>https://raw.githubusercontent.com/Elders/logo/master/cronus/frame.png</PackageIconUrl>
+  </PropertyGroup>
 
-    <!--netstandard2.0-->
-    <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-        <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;LIBLOG_PORTABLE</DefineConstants>
-    </PropertyGroup>
-    <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-        <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    </ItemGroup>
+  <!--netstandard2.0-->
+  <PropertyGroup>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;LIBLOG_PORTABLE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+  </ItemGroup>
 
-    <!--net45-->
-    <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
-        <DefineConstants>TRACE;DEBUG;LIBLOG_PORTABLE</DefineConstants>
-    </PropertyGroup>
-    <ItemGroup Condition="'$(TargetFramework)'=='net45'">
-        <Reference Include="mscorlib" />
-        <Reference Include="System" />
-        <Reference Include="System.Core" />
-        <Reference Include="Microsoft.CSharp" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="LibLog" Version="4.2.6" />
-        <PackageReference Include="Cronus" Version="5.0.0-beta0034" />
-        <PackageReference Include="RedLock" Version="3.0.0" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="LibLog" Version="5.0.2" />
+    <PackageReference Include="Cronus" Version="5.0.0-beta0034" />
+    <PackageReference Include="RedLock" Version="4.0.0" />
+  </ItemGroup>
 </Project>
