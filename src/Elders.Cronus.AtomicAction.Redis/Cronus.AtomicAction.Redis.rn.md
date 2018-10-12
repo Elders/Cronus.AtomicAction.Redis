@@ -1,4 +1,4 @@
-#### 5.0.0 - 12.10.2018
+#### 5.0.0-beta0001 - 12.10.2018
 * Updates Redlock to 4.0.0
 * Updates LibLog to 5.0.2
 
