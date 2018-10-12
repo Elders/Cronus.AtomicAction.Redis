@@ -18,6 +18,8 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
             connection = ConnectionMultiplexer.Connect(configurationOptions);
         }
 
+        public RedisRevisionStore(Microsoft.Extensions.Configuration.IConfiguration configuration) : this(configuration["cronus_atomicaction_redis_connectionstring"]) { }
+
         public Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision)
         {
             return SaveRevision(aggregateRootId, revision, null);
