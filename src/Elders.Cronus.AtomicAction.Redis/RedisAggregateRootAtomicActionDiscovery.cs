@@ -1,6 +1,7 @@
-﻿using Elders.Cronus.AtomicAction.Redis.RevisionStore;
+﻿using System.Collections.Generic;
+using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.Discoveries;
-
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Elders.Cronus.AtomicAction.Redis
 {
@@ -8,13 +9,15 @@ namespace Elders.Cronus.AtomicAction.Redis
     {
         protected override DiscoveryResult<IAggregateRootAtomicAction> DiscoverFromAssemblies(DiscoveryContext context)
         {
-            var discoveryResult = new DiscoveryResult<IAggregateRootAtomicAction>();
-            discoveryResult.Models.Add(new DiscoveredModel(typeof(IAggregateRootAtomicAction), typeof(RedisAggregateRootAtomicAction)));
-            discoveryResult.Models.Add(new DiscoveredModel(typeof(RedLock.IRedisLockManager), typeof(RedLock.RedisLockManager), new RedLock.RedisLockManager(context.Configuration["cronus_atomicaction_redis_connectionstring"])));
-            discoveryResult.Models.Add(new DiscoveredModel(typeof(ILock), typeof(AggregateRootLock.RedisAggregateRootLock)));
-            discoveryResult.Models.Add(new DiscoveredModel(typeof(IRevisionStore), typeof(RedisRevisionStore)));
+            return new DiscoveryResult<IAggregateRootAtomicAction>(GetModels(context));
+        }
 
-            return discoveryResult;
+        IEnumerable<DiscoveredModel> GetModels(DiscoveryContext context)
+        {
+            yield return new DiscoveredModel(typeof(IAggregateRootAtomicAction), typeof(RedisAggregateRootAtomicAction), ServiceLifetime.Transient);
+            yield return new DiscoveredModel(typeof(RedLock.IRedisLockManager), new RedLock.RedisLockManager(context.Configuration["cronus_atomicaction_redis_connectionstring"]));
+            yield return new DiscoveredModel(typeof(ILock), typeof(AggregateRootLock.RedisAggregateRootLock), ServiceLifetime.Transient);
+            yield return new DiscoveredModel(typeof(IRevisionStore), typeof(RedisRevisionStore), ServiceLifetime.Transient);
         }
     }
 }
