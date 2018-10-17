@@ -1,4 +1,7 @@
-#### 5.0.0-beta0003 - 17.10.2018
+#### 5.0.0-beta0004 - 17.10.2018
+* Fixes the lifestyle of the RedisRevisionStore
+
+* #### 5.0.0-beta0003 - 17.10.2018
 * Updates packages
 
 #### 5.0.0-beta0002 - 16.10.2018
