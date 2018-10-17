@@ -17,7 +17,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             yield return new DiscoveredModel(typeof(IAggregateRootAtomicAction), typeof(RedisAggregateRootAtomicAction), ServiceLifetime.Transient);
             yield return new DiscoveredModel(typeof(RedLock.IRedisLockManager), new RedLock.RedisLockManager(context.Configuration["cronus_atomicaction_redis_connectionstring"]));
             yield return new DiscoveredModel(typeof(ILock), typeof(AggregateRootLock.RedisAggregateRootLock), ServiceLifetime.Transient);
-            yield return new DiscoveredModel(typeof(IRevisionStore), typeof(RedisRevisionStore), ServiceLifetime.Transient);
+            yield return new DiscoveredModel(typeof(IRevisionStore), typeof(RedisRevisionStore), ServiceLifetime.Singleton);
         }
     }
 }
