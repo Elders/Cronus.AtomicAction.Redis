@@ -1,4 +1,5 @@
-﻿using Elders.Cronus.AtomicAction.Redis.RevisionStore;
+﻿using Elders.Cronus.AtomicAction.Redis.Config;
+using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 
 namespace Elders.Cronus.AtomicAction.Redis.Tests
 {
@@ -6,7 +7,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests
     {
         public static IAggregateRootAtomicAction New(ILock aggregateRootLock, IRevisionStore revisionStore)
         {
-            return new RedisAggregateRootAtomicAction(aggregateRootLock, revisionStore);
+            return new RedisAggregateRootAtomicAction(aggregateRootLock, revisionStore, RedisAtomicActionOptions.Defaults);
         }
     }
 }
