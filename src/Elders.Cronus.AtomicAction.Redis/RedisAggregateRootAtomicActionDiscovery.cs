@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.Discoveries;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             yield return new DiscoveredModel(typeof(RedLock.IRedisLockManager), new RedLock.RedisLockManager(context.Configuration["cronus_atomicaction_redis_connectionstring"]));
             yield return new DiscoveredModel(typeof(ILock), typeof(AggregateRootLock.RedisAggregateRootLock), ServiceLifetime.Transient);
             yield return new DiscoveredModel(typeof(IRevisionStore), typeof(RedisRevisionStore), ServiceLifetime.Singleton);
+            yield return new DiscoveredModel(typeof(RedisAtomicActionOptions), typeof(RedisAtomicActionOptions), ServiceLifetime.Transient);
         }
     }
 }
