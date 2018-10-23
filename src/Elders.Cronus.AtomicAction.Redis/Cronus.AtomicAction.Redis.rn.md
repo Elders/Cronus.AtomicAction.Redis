@@ -1,3 +1,6 @@
+#### 5.0.0-beta0006 - 23.10.2018
+* Adds the RedisAtomicActionOptions to the discovery
+
 #### 5.0.0-beta0005 - 23.10.2018
 * Adds configurations for the Redlock
 
