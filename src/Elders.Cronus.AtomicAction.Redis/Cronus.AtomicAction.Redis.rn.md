@@ -1,3 +1,6 @@
+#### 5.0.0-beta0005 - 23.10.2018
+* Adds configurations for the Redlock
+
 #### 5.0.0-beta0004 - 17.10.2018
 * Fixes the lifestyle of the RedisRevisionStore
 
