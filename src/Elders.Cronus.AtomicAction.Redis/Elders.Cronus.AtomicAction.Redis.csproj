@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="LibLog" Version="5.0.2" />
-    <PackageReference Include="Cronus" Version="5.0.0-discovery0013" />
+    <PackageReference Include="Cronus" Version="5.0.0-discovery0014" />
     <PackageReference Include="RedLock" Version="4.0.0" />
   </ItemGroup>
 

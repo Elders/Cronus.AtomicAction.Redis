@@ -1,3 +1,6 @@
+#### 5.0.0-beta0007 - 24.10.2018
+* Updates Cronus
+
 #### 5.0.0-beta0006 - 23.10.2018
 * Adds the RedisAtomicActionOptions to the discovery
 
