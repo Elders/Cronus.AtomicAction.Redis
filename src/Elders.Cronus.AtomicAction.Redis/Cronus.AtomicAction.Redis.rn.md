@@ -1,3 +1,6 @@
+#### 5.0.0-beta0008 - 28.10.2018
+* Bumps Cronus
+
 #### 5.0.0-beta0007 - 24.10.2018
 * Updates Cronus
 
