@@ -1,3 +1,9 @@
+#### 5.0.0 - 29.11.2018
+* Adds the RedisAtomicActionOptions to the discovery
+* Adds configurations for the Redlock
+* Fixes the lifestyle of the RedisRevisionStore
+* Updates LibLog to 5.0.2
+
 #### 2.0.0 - 25.07.2018
 * Update Redlock to 3.0.0
 

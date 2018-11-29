@@ -9,6 +9,10 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
     {
         private ConnectionMultiplexer connection;
 
+        /// <summary>
+        /// This must be SINGLETON because we are doing => connection = ConnectionMultiplexer.Connect(configurationOptions);
+        /// </summary>
+        /// <param name="connectionString"></param>
         public RedisRevisionStore(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString)) throw new ArgumentNullException(nameof(connectionString));
@@ -17,6 +21,8 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
 
             connection = ConnectionMultiplexer.Connect(configurationOptions);
         }
+
+        public RedisRevisionStore(Microsoft.Extensions.Configuration.IConfiguration configuration) : this(configuration["cronus_atomicaction_redis_connectionstring"]) { }
 
         public Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision)
         {

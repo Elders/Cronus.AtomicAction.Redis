@@ -16,14 +16,7 @@ namespace Elders.Cronus.AtomicAction.Redis
 
         private RedisAtomicActionOptions options;
 
-        public RedisAggregateRootAtomicAction(ILock aggregateRootLock, IRevisionStore revisionStore) :
-            this(aggregateRootLock, revisionStore, RedisAtomicActionOptions.Defaults)
-        {
-        }
-
-        public RedisAggregateRootAtomicAction(ILock aggregateRootLock,
-                                              IRevisionStore revisionStore,
-                                              RedisAtomicActionOptions options)
+        public RedisAggregateRootAtomicAction(ILock aggregateRootLock, IRevisionStore revisionStore, RedisAtomicActionOptions options)
         {
             if (ReferenceEquals(null, aggregateRootLock)) throw new ArgumentNullException(nameof(aggregateRootLock));
             if (ReferenceEquals(null, revisionStore)) throw new ArgumentNullException(nameof(revisionStore));
