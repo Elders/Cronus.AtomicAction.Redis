@@ -1,26 +1,7 @@
-#### 5.0.0-beta0008 - 28.10.2018
-* Bumps Cronus
-
-#### 5.0.0-beta0007 - 24.10.2018
-* Updates Cronus
-
-#### 5.0.0-beta0006 - 23.10.2018
+#### 5.0.0 - 29.11.2018
 * Adds the RedisAtomicActionOptions to the discovery
-
-#### 5.0.0-beta0005 - 23.10.2018
 * Adds configurations for the Redlock
-
-#### 5.0.0-beta0004 - 17.10.2018
 * Fixes the lifestyle of the RedisRevisionStore
-
-* #### 5.0.0-beta0003 - 17.10.2018
-* Updates packages
-
-#### 5.0.0-beta0002 - 16.10.2018
-* Updates packages
-
-#### 5.0.0-beta0001 - 12.10.2018
-* Updates Redlock to 4.0.0
 * Updates LibLog to 5.0.2
 
 #### 2.0.0 - 25.07.2018
