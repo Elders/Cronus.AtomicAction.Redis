@@ -29,7 +29,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Cronus" Version="5.0.0" />
+    <PackageReference Include="Cronus" Version="5.1.0" />
     <PackageReference Include="RedLock" Version="4.0.0" />
   </ItemGroup>
 
