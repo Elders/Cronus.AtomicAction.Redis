@@ -1,3 +1,6 @@
+#### 6.0.0-beta0001 - 30.10.2019
+* Updates packages
+
 #### 5.1.0 - 10.12.2018
 * Updates to DNC 2.2
 
