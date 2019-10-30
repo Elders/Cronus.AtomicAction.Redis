@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Elders.Cronus.AtomicAction.Redis
 {
-    public class RedisAggregateRootAtomicActionDiscovery : DiscoveryBasedOnExecutingDirAssemblies<IAggregateRootAtomicAction>
+    public class RedisAggregateRootAtomicActionDiscovery : DiscoveryBase<IAggregateRootAtomicAction>
     {
         protected override DiscoveryResult<IAggregateRootAtomicAction> DiscoverFromAssemblies(DiscoveryContext context)
         {
