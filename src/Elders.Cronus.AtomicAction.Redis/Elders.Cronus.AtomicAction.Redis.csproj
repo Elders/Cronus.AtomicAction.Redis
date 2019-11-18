@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus" Version="6.0.0-beta0008" />
+    <PackageReference Include="Cronus" Version="6.0.0-beta0009" />
     <PackageReference Include="LibLog" Version="5.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
