@@ -1,3 +1,7 @@
+#### 6.0.0-beta0003 - 26.03.2020
+* Bumps to dotnet core 3.1
+* Updates packages
+
 #### 6.0.0-beta0002 - 11.12.2019
 * Updates packages
 
