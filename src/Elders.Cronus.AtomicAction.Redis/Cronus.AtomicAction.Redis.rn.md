@@ -1,3 +1,6 @@
+#### 6.0.0-beta0005 - 09.04.2020
+* Using RedLock 5.0.0
+
 #### 6.0.0-beta0004 - 09.04.2020
 * Configuration documentation
 * .build solution folder
