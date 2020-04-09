@@ -1,4 +1,7 @@
 # Cronus.AtomicAction.Redis
+An implementation of `Cronus.AtomicAction` using distributed locks with Redis
+
+(*Source:* https://redis.io/topics/distlock)
 
 #### `Cronus:AtomicAction:Redis:ConnectionString` >> *string | Required: Yes*
 Configures the connection string where Redis is located
