@@ -1,3 +1,10 @@
+#### 6.0.0-beta0004 - 09.04.2020
+* Configuration documentation
+* .build solution folder
+* Example project
+* Migrated unit tests to dotnet core
+* Using Options pattern
+
 #### 6.0.0-beta0003 - 26.03.2020
 * Bumps to dotnet core 3.1
 * Updates packages
