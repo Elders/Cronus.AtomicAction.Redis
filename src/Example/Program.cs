@@ -8,7 +8,6 @@ using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.RedLock;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Example
 {
@@ -20,20 +19,11 @@ namespace Example
             var services = new ServiceCollection();
             services.AddSingleton<IConfiguration>(configuration);
             services.Configure<RedisAtomicActionOptions>(configuration);
+            services.Configure<RedLockOptions>(configuration);
             services.AddOptions<RedisAtomicActionOptions, RedisAtomicActionOptionsProvider>();
+            services.AddOptions<RedLockOptions, RedLockOptionsProvider>();
             services.AddTransient<IAggregateRootAtomicAction, RedisAggregateRootAtomicAction>();
-            services.AddSingleton<IRedisLockManager>(x =>
-            {
-                var options = x.GetRequiredService<IOptionsMonitor<RedisAtomicActionOptions>>();
-                var redLockOptions = new RedLockOptions
-                {
-                    ClockDriveFactor = options.CurrentValue.ClockDriveFactor,
-                    LockRetryCount = options.CurrentValue.LockRetryCount,
-                    LockRetryDelay = options.CurrentValue.LockRetryDelay
-                };
-
-                return new RedisLockManager(redLockOptions, options.CurrentValue.ConnectionString);
-            });
+            services.AddSingleton<IRedisLockManager, RedisLockManager>();
             services.AddTransient<ILock, RedisAggregateRootLock>();
             services.AddSingleton<IRevisionStore, RedisRevisionStore>();
             var serviceProvider = services.BuildServiceProvider();

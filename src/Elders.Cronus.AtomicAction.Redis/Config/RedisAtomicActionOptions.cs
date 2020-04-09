@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Elders.RedLock;
 using Microsoft.Extensions.Configuration;
 
 namespace Elders.Cronus.AtomicAction.Redis.Config
@@ -14,12 +15,6 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
         public TimeSpan ShorTtl { get; set; } = TimeSpan.FromSeconds(1);
 
         public TimeSpan LongTtl { get; set; } = TimeSpan.FromMinutes(5);
-
-        public int LockRetryCount { get; set; } = 3;
-
-        public TimeSpan LockRetryDelay { get; set; } = TimeSpan.FromMilliseconds(100);
-
-        public double ClockDriveFactor { get; set; } = 0.01;
     }
 
     public class RedisAtomicActionOptionsProvider : CronusOptionsProviderBase<RedisAtomicActionOptions>
@@ -27,6 +22,16 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
         public RedisAtomicActionOptionsProvider(IConfiguration configuration) : base(configuration) { }
 
         public override void Configure(RedisAtomicActionOptions options)
+        {
+            configuration.GetSection("cronus:atomicaction:redis").Bind(options);
+        }
+    }
+
+    public class RedLockOptionsProvider : CronusOptionsProviderBase<RedLockOptions>
+    {
+        public RedLockOptionsProvider(IConfiguration configuration) : base(configuration) { }
+
+        public override void Configure(RedLockOptions options)
         {
             configuration.GetSection("cronus:atomicaction:redis").Bind(options);
         }
