@@ -14,7 +14,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
 
         public TimeSpan ShorTtl { get; set; } = TimeSpan.FromSeconds(1);
 
-        public TimeSpan LongTtl { get; set; } = TimeSpan.FromMinutes(5);
+        public TimeSpan LongTtl { get; set; } = TimeSpan.FromSeconds(5);
     }
 
     public class RedisAtomicActionOptionsProvider : CronusOptionsProviderBase<RedisAtomicActionOptions>
