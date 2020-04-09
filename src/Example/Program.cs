@@ -1,10 +1,14 @@
 ﻿using System;
 using Elders.Cronus;
+using Elders.Cronus.AtomicAction;
 using Elders.Cronus.AtomicAction.Redis;
 using Elders.Cronus.AtomicAction.Redis.AggregateRootLock;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
-using RedLock;
+using Elders.RedLock;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Example
 {
@@ -12,28 +16,42 @@ namespace Example
     {
         static void Main(string[] args)
         {
-            var connectionString = "docker-local.com:6379,abortConnect=False";
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            var services = new ServiceCollection();
+            services.AddSingleton<IConfiguration>(configuration);
+            services.Configure<RedisAtomicActionOptions>(configuration);
+            services.AddOptions<RedisAtomicActionOptions, RedisAtomicActionOptionsProvider>();
+            services.AddTransient<IAggregateRootAtomicAction, RedisAggregateRootAtomicAction>();
+            services.AddSingleton<IRedisLockManager>(x =>
+            {
+                var options = x.GetRequiredService<IOptionsMonitor<RedisAtomicActionOptions>>();
+                var redLockOptions = new RedLockOptions
+                {
+                    ClockDriveFactor = options.CurrentValue.ClockDriveFactor,
+                    LockRetryCount = options.CurrentValue.LockRetryCount,
+                    LockRetryDelay = options.CurrentValue.LockRetryDelay
+                };
 
-            var redlock = new RedisLockManager(connectionString);
-            var aggregateRootLock = new RedisAggregateRootLock(redlock);
-            var revisionStore = new RedisRevisionStore(connectionString);
+                return new RedisLockManager(redLockOptions, options.CurrentValue.ConnectionString);
+            });
+            services.AddTransient<ILock, RedisAggregateRootLock>();
+            services.AddSingleton<IRevisionStore, RedisRevisionStore>();
+            var serviceProvider = services.BuildServiceProvider();
 
-            var options = new RedisAtomicActionOptions();
-            options.LockTtl = TimeSpan.FromSeconds(1);
-            options.ShorTtl = TimeSpan.FromSeconds(1);
-
-            var atomicAction = new RedisAggregateRootAtomicAction(aggregateRootLock, revisionStore, options);
+            var atomicAction = serviceProvider.GetRequiredService<IAggregateRootAtomicAction>();
             var id = new HeadquarterId("20ed0b20-0f7f-4659-9211-0bee5b693e51", "elders");
             var revision = 1;
 
             while (true)
             {
-                System.Threading.Thread.Sleep(500);
+                System.Threading.Thread.Sleep(100);
+                Console.Clear();
                 var result = atomicAction.Execute(id, revision++, () =>
                 {
-                    Console.WriteLine(id);
+                    Console.WriteLine($"{DateTime.Now.TimeOfDay}-{id}");
                 });
-                Console.WriteLine(result.IsSuccessful);
+
+                Console.WriteLine($"{DateTime.Now.TimeOfDay}-{result.IsSuccessful}");
             }
         }
     }
