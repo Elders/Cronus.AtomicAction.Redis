@@ -16,6 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{CE2E7F
 		Elders.Cronus.AtomicAction.Redis\Cronus.AtomicAction.Redis.rn.md = Elders.Cronus.AtomicAction.Redis\Cronus.AtomicAction.Redis.rn.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{F3CB34C7-8B26-4D6D-AC53-1A1401AA6D8D}"
+	ProjectSection(SolutionItems) = preProject
+		doc\Configuration.md = doc\Configuration.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
