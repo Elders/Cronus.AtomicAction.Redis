@@ -1,3 +1,6 @@
+#### 6.0.0-beta0006 - 09.04.2020
+* Long ttl defaults to 5 seconds
+
 #### 6.0.0-beta0005 - 09.04.2020
 * Using RedLock 5.0.0
 
