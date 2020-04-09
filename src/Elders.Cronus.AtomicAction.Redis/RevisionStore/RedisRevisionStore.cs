@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.Userfull;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
 namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
@@ -12,17 +14,12 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
         /// <summary>
         /// This must be SINGLETON because we are doing => connection = ConnectionMultiplexer.Connect(configurationOptions);
         /// </summary>
-        /// <param name="connectionString"></param>
-        public RedisRevisionStore(string connectionString)
+        public RedisRevisionStore(IOptionsMonitor<RedisAtomicActionOptions> options)
         {
-            if (string.IsNullOrEmpty(connectionString)) throw new ArgumentNullException(nameof(connectionString));
-
-            var configurationOptions = ConfigurationOptions.Parse(connectionString);
+            var configurationOptions = ConfigurationOptions.Parse(options.CurrentValue.ConnectionString);
 
             connection = ConnectionMultiplexer.Connect(configurationOptions);
         }
-
-        public RedisRevisionStore(Microsoft.Extensions.Configuration.IConfiguration configuration) : this(configuration["cronus_atomicaction_redis_connectionstring"]) { }
 
         public Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision)
         {
