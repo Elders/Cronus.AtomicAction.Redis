@@ -1,11 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elders.Cronus.AtomicAction.Redis", "Elders.Cronus.AtomicAction.Redis\Elders.Cronus.AtomicAction.Redis.csproj", "{5486073C-6747-439F-93DB-678A7F59E34D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.AtomicAction.Redis.Tests", "Elders.Cronus.AtomicAction.Redis.Tests\Elders.Cronus.AtomicAction.Redis.Tests.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.AtomicAction.Redis.Tests", "Elders.Cronus.AtomicAction.Redis.Tests\Elders.Cronus.AtomicAction.Redis.Tests.csproj", "{8D013F83-7F61-4028-99C4-B623B3025060}"
+EndProject
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +18,10 @@ Global
 		{5486073C-6747-439F-93DB-678A7F59E34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5486073C-6747-439F-93DB-678A7F59E34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5486073C-6747-439F-93DB-678A7F59E34D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D013F83-7F61-4028-99C4-B623B3025060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D013F83-7F61-4028-99C4-B623B3025060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D013F83-7F61-4028-99C4-B623B3025060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D013F83-7F61-4028-99C4-B623B3025060}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
