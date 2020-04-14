@@ -1,15 +1,15 @@
 ﻿using System;
 using Elders.Cronus.AtomicAction.Redis.Config;
-using Elders.Cronus.AtomicAction.Redis.Logging;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.Userfull;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Elders.Cronus.AtomicAction.Redis
 {
     public class RedisAggregateRootAtomicAction : IAggregateRootAtomicAction
     {
-        static readonly ILog log = LogProvider.GetLogger(typeof(RedisAggregateRootAtomicAction));
+        static readonly ILogger logger = CronusLogger.CreateLogger(typeof(RedisAggregateRootAtomicAction));
 
         private IRevisionStore revisionStore;
 
@@ -57,7 +57,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             }
             catch (Exception ex)
             {
-                log.ErrorException("Unable to execute action", ex);
+                logger.ErrorException("Unable to execute action", ex);
                 return Result.Error(ex);
             }
             finally
@@ -137,7 +137,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             }
             catch (Exception ex)
             {
-                log.ErrorException("Unable to unlock", ex);
+                logger.ErrorException("Unable to unlock", ex);
             }
         }
 

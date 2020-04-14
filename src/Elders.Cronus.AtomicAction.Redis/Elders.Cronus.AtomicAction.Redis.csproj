@@ -25,10 +25,6 @@
 
   <ItemGroup>
     <PackageReference Include="Cronus" Version="6.0.0-beta0024" />
-    <PackageReference Include="LibLog" Version="5.0.8">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="RedLock" Version="5.0.0" />
   </ItemGroup>
 
