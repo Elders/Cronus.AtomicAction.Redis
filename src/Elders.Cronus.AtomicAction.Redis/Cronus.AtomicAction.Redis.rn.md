@@ -1,3 +1,7 @@
+#### 6.0.0-beta0007 - 15.04.2020
+* Replaces liblog
+* fixes tests
+
 #### 6.0.0-beta0006 - 09.04.2020
 * Long ttl defaults to 5 seconds
 
