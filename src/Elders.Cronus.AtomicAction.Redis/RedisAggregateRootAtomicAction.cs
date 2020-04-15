@@ -73,7 +73,7 @@ namespace Elders.Cronus.AtomicAction.Redis
                 var resource = Convert.ToBase64String(arId.RawId);
 
                 if (aggregateRootLock.Lock(resource, ttl) == false)
-                    return new Result<string>().WithError($"Failed to lock aggregate with id: {arId.Urn.Value}");
+                    return new Result<string>().WithError($"Failed to lock aggregate with id: {arId.Value}");
 
                 return new Result<string>(resource);
             }

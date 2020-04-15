@@ -46,16 +46,16 @@ namespace Example
         }
     }
 
-    public class HeadquarterId : StringTenantId
+    public class HeadquarterId : AggregateRootId
     {
         HeadquarterId() { }
 
-        public HeadquarterId(StringTenantId id) : base(id, "Headquarter") { }
+        public HeadquarterId(AggregateRootId id) : base(id, "Headquarter", "elders") { }
 
         public HeadquarterId(string id, string tenant) : base(id, "Headquarter", tenant) { }
     }
 
-    class TestId : StringTenantId
+    class TestId : AggregateRootId
     {
         public TestId() : base("e0846069-2730-4d3c-bc80-470d6a521d99", "testid", "elders")
         {
