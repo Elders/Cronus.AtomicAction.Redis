@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus" Version="6.0.0-beta0024" />
+    <PackageReference Include="Cronus" Version="6.0.0-beta0026" />
     <PackageReference Include="RedLock" Version="5.0.0" />
   </ItemGroup>
 
