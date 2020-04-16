@@ -1,3 +1,12 @@
+#### 6.0.0 - 16.04.2020
+* Replaces liblog
+* Long ttl defaults to 5 seconds
+* Using RedLock 5.0.0
+* Configuration documentation
+* Migrated unit tests to dotnet core
+* Using Options pattern
+* Bumps to dotnet core 3.1
+
 #### 5.1.0 - 10.12.2018
 * Updates to DNC 2.2
 

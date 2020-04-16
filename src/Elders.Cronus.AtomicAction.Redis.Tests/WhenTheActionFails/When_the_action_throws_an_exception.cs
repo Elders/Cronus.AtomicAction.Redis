@@ -19,6 +19,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenTheActionFails
             lockManager = A.Fake<ILock>();
             A.CallTo(() => lockManager.Lock(Convert.ToBase64String(id.RawId), A<TimeSpan>.Ignored)).Returns(true);
 
+            options = new RedisAtomicActionOptionsMonitorMock().CurrentValue;
             service = TestAtomicActionFactory.New(lockManager, revisionStore);
         };
 
@@ -27,16 +28,16 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenTheActionFails
         It should_return__false__as_a_result = () => result.Value.ShouldBeFalse();
         It should_have_an_exception_produced = () => result.Errors.ShouldNotBeEmpty();
         It should_try_to_increment_the_stored_revision = () =>
-            A.CallTo(() => revisionStore.SaveRevision(id, 2, RedisAtomicActionOptions.Defaults.ShorTtl))
+            A.CallTo(() => revisionStore.SaveRevision(id, 2, options.ShorTtl))
                 .MustHaveHappened();
 
         It should_execute_the_given_action = () => actionExecuted.ShouldBeTrue();
         It should_try_to_decrement_the_stored_revision = () =>
-            A.CallTo(() => revisionStore.SaveRevision(id, 1, RedisAtomicActionOptions.Defaults.LongTtl))
+            A.CallTo(() => revisionStore.SaveRevision(id, 1, options.LongTtl))
                 .MustHaveHappened();
 
         It should_not_try_to_persist_the_revision_for_a_long_period = () =>
-            A.CallTo(() => revisionStore.SaveRevision(id, 2, RedisAtomicActionOptions.Defaults.LongTtl))
+            A.CallTo(() => revisionStore.SaveRevision(id, 2, options.LongTtl))
                 .MustNotHaveHappened();
 
 
@@ -48,6 +49,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenTheActionFails
         static Result<bool> result;
         static IAggregateRootAtomicAction service;
         static bool actionExecuted = false;
+        static RedisAtomicActionOptions options;
         static Action action = () =>
         {
             actionExecuted = true;

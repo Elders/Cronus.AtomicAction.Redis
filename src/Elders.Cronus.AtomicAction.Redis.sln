@@ -1,11 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elders.Cronus.AtomicAction.Redis", "Elders.Cronus.AtomicAction.Redis\Elders.Cronus.AtomicAction.Redis.csproj", "{5486073C-6747-439F-93DB-678A7F59E34D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.AtomicAction.Redis.Tests", "Elders.Cronus.AtomicAction.Redis.Tests\Elders.Cronus.AtomicAction.Redis.Tests.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elders.Cronus.AtomicAction.Redis.Tests", "Elders.Cronus.AtomicAction.Redis.Tests\Elders.Cronus.AtomicAction.Redis.Tests.csproj", "{8D013F83-7F61-4028-99C4-B623B3025060}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "Example\Example.csproj", "{500E34AD-6846-4241-B52D-8F4FF2F54D07}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{CE2E7F40-E849-4C8C-90B7-40EFF20EDB15}"
+	ProjectSection(SolutionItems) = preProject
+		..\appveyor.yml = ..\appveyor.yml
+		..\build-configuration.cmd = ..\build-configuration.cmd
+		Elders.Cronus.AtomicAction.Redis\Cronus.AtomicAction.Redis.rn.md = Elders.Cronus.AtomicAction.Redis\Cronus.AtomicAction.Redis.rn.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{F3CB34C7-8B26-4D6D-AC53-1A1401AA6D8D}"
+	ProjectSection(SolutionItems) = preProject
+		..\doc\Configuration.md = ..\doc\Configuration.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +31,14 @@ Global
 		{5486073C-6747-439F-93DB-678A7F59E34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5486073C-6747-439F-93DB-678A7F59E34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5486073C-6747-439F-93DB-678A7F59E34D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D013F83-7F61-4028-99C4-B623B3025060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D013F83-7F61-4028-99C4-B623B3025060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D013F83-7F61-4028-99C4-B623B3025060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D013F83-7F61-4028-99C4-B623B3025060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{500E34AD-6846-4241-B52D-8F4FF2F54D07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{500E34AD-6846-4241-B52D-8F4FF2F54D07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{500E34AD-6846-4241-B52D-8F4FF2F54D07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{500E34AD-6846-4241-B52D-8F4FF2F54D07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

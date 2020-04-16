@@ -1,14 +1,15 @@
 ﻿using System;
 using Elders.Cronus.AtomicAction.Redis.Config;
-using Elders.Cronus.AtomicAction.Redis.Logging;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.Userfull;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Elders.Cronus.AtomicAction.Redis
 {
     public class RedisAggregateRootAtomicAction : IAggregateRootAtomicAction
     {
-        static readonly ILog log = LogProvider.GetLogger(typeof(RedisAggregateRootAtomicAction));
+        static readonly ILogger logger = CronusLogger.CreateLogger(typeof(RedisAggregateRootAtomicAction));
 
         private IRevisionStore revisionStore;
 
@@ -16,7 +17,7 @@ namespace Elders.Cronus.AtomicAction.Redis
 
         private RedisAtomicActionOptions options;
 
-        public RedisAggregateRootAtomicAction(ILock aggregateRootLock, IRevisionStore revisionStore, RedisAtomicActionOptions options)
+        public RedisAggregateRootAtomicAction(ILock aggregateRootLock, IRevisionStore revisionStore, IOptionsMonitor<RedisAtomicActionOptions> options)
         {
             if (ReferenceEquals(null, aggregateRootLock)) throw new ArgumentNullException(nameof(aggregateRootLock));
             if (ReferenceEquals(null, revisionStore)) throw new ArgumentNullException(nameof(revisionStore));
@@ -24,7 +25,7 @@ namespace Elders.Cronus.AtomicAction.Redis
 
             this.aggregateRootLock = aggregateRootLock;
             this.revisionStore = revisionStore;
-            this.options = options;
+            this.options = options.CurrentValue;
         }
 
         public Result<bool> Execute(IAggregateRootId arId, int aggregateRootRevision, Action action)
@@ -56,7 +57,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             }
             catch (Exception ex)
             {
-                log.ErrorException("Unable to execute action", ex);
+                logger.ErrorException("Unable to execute action", ex);
                 return Result.Error(ex);
             }
             finally
@@ -72,7 +73,7 @@ namespace Elders.Cronus.AtomicAction.Redis
                 var resource = Convert.ToBase64String(arId.RawId);
 
                 if (aggregateRootLock.Lock(resource, ttl) == false)
-                    return new Result<string>().WithError($"Failed to lock aggregate with id: {arId.Urn.Value}");
+                    return new Result<string>().WithError($"Failed to lock aggregate with id: {arId.Value}");
 
                 return new Result<string>(resource);
             }
@@ -136,7 +137,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             }
             catch (Exception ex)
             {
-                log.ErrorException("Unable to unlock", ex);
+                logger.ErrorException("Unable to unlock", ex);
             }
         }
 

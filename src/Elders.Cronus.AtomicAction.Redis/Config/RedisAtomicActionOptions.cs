@@ -1,40 +1,39 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using Elders.RedLock;
 using Microsoft.Extensions.Configuration;
 
 namespace Elders.Cronus.AtomicAction.Redis.Config
 {
     public class RedisAtomicActionOptions
     {
-        public RedisAtomicActionOptions(IConfiguration configuration)
+        [Required(AllowEmptyStrings = false, ErrorMessage = "The configuration `Cronus:AtomicAction:Eedis:ConnectionString` is required. For more information see here https://github.com/Elders/Cronus/blob/master/doc/Configuration.md")]
+        public string ConnectionString { get; set; }
+
+        public TimeSpan LockTtl { get; set; } = TimeSpan.FromSeconds(1);
+
+        public TimeSpan ShorTtl { get; set; } = TimeSpan.FromSeconds(1);
+
+        public TimeSpan LongTtl { get; set; } = TimeSpan.FromSeconds(5);
+    }
+
+    public class RedisAtomicActionOptionsProvider : CronusOptionsProviderBase<RedisAtomicActionOptions>
+    {
+        public RedisAtomicActionOptionsProvider(IConfiguration configuration) : base(configuration) { }
+
+        public override void Configure(RedisAtomicActionOptions options)
         {
-            LockTtl = GetValue(configuration, "cronus_atomicaction_redis_ttl_lock_ms", TimeSpan.FromMilliseconds(1000));
-            ShorTtl = GetValue(configuration, "cronus_atomicaction_redis_ttl_short_ms", TimeSpan.FromMilliseconds(1000));
-            LongTtl = GetValue(configuration, "cronus_atomicaction_redis_ttl_long_ms", TimeSpan.FromMilliseconds(300000));
+            configuration.GetSection("cronus:atomicaction:redis").Bind(options);
         }
+    }
 
-        RedisAtomicActionOptions() { }
+    public class RedLockOptionsProvider : CronusOptionsProviderBase<RedLockOptions>
+    {
+        public RedLockOptionsProvider(IConfiguration configuration) : base(configuration) { }
 
-        private static RedisAtomicActionOptions defaults = new RedisAtomicActionOptions()
+        public override void Configure(RedLockOptions options)
         {
-            LockTtl = TimeSpan.FromSeconds(1),
-            ShorTtl = TimeSpan.FromSeconds(1),
-            LongTtl = TimeSpan.FromMinutes(5)
-        };
-
-        public TimeSpan LockTtl { get; set; }
-
-        public TimeSpan ShorTtl { get; set; }
-
-        public TimeSpan LongTtl { get; set; }
-
-        public static RedisAtomicActionOptions Defaults { get { return defaults; } }
-
-        TimeSpan GetValue(IConfiguration configuration, string key, TimeSpan defaultValue)
-        {
-            var value = configuration[key];
-            if (string.IsNullOrEmpty(value)) return defaultValue;
-
-            return TimeSpan.FromMilliseconds(double.Parse(value));
+            configuration.GetSection("cronus:atomicaction:redis").Bind(options);
         }
     }
 }

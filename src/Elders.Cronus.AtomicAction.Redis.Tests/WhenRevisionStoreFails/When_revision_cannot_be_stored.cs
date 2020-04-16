@@ -21,6 +21,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenRevisionStoreFails
             A.CallTo(() => revisionStore.GetRevision(id)).Returns(new Result<int>(0));
             A.CallTo(() => revisionStore.SaveRevision(id, A<int>.Ignored, A<TimeSpan?>.Ignored)).Throws(new Exception(message));
 
+            options = new RedisAtomicActionOptionsMonitorMock().CurrentValue;
             service = TestAtomicActionFactory.New(lockManager, revisionStore);
         };
 
@@ -31,7 +32,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenRevisionStoreFails
         It should_not_execute_the_given_action = () => actionExecuted.ShouldBeFalse();
         It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.Unlock(Convert.ToBase64String(id.RawId))).MustHaveHappened();
         It should_not_try_to_persist_the_revision_for_a_long_period = () =>
-            A.CallTo(() => revisionStore.SaveRevision(id, 1, RedisAtomicActionOptions.Defaults.LongTtl))
+            A.CallTo(() => revisionStore.SaveRevision(id, 1, options.LongTtl))
                 .MustNotHaveHappened();
 
         static string message = "cannot save revision";
@@ -42,5 +43,6 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenRevisionStoreFails
         static Result<bool> result;
         static Action action = () => { actionExecuted = true; };
         static bool actionExecuted = false;
+        static RedisAtomicActionOptions options;
     }
 }
