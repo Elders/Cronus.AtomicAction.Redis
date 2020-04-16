@@ -1,29 +1,11 @@
-#### 6.0.0-beta0007 - 15.04.2020
+#### 6.0.0 - 16.04.2020
 * Replaces liblog
-* fixes tests
-
-#### 6.0.0-beta0006 - 09.04.2020
 * Long ttl defaults to 5 seconds
-
-#### 6.0.0-beta0005 - 09.04.2020
 * Using RedLock 5.0.0
-
-#### 6.0.0-beta0004 - 09.04.2020
 * Configuration documentation
-* .build solution folder
-* Example project
 * Migrated unit tests to dotnet core
 * Using Options pattern
-
-#### 6.0.0-beta0003 - 26.03.2020
 * Bumps to dotnet core 3.1
-* Updates packages
-
-#### 6.0.0-beta0002 - 11.12.2019
-* Updates packages
-
-#### 6.0.0-beta0001 - 30.10.2019
-* Updates packages
 
 #### 5.1.0 - 10.12.2018
 * Updates to DNC 2.2
