@@ -6,11 +6,11 @@
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FakeItEasy" Version="6.2.0" />
+    <PackageReference Include="FakeItEasy" Version="7.0.2" />
     <PackageReference Include="Machine.Specifications" Version="1.0.0" />
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.1" />
     <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Elders.Cronus.AtomicAction.Redis\Elders.Cronus.AtomicAction.Redis.csproj" />
