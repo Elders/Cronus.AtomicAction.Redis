@@ -1,3 +1,10 @@
+## [6.1.1-preview.2](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v6.1.1-preview.1...v6.1.1-preview.2) (2021-05-11)
+
+
+### Bug Fixes
+
+* Updates Cronus ([0e7db80](https://github.com/Elders/Cronus.AtomicAction.Redis/commit/0e7db8057fe1220584512c4bb19f1c81a85ec5f3))
+
 ## [6.1.1-preview.1](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v6.1.0...v6.1.1-preview.1) (2021-05-07)
 
 
