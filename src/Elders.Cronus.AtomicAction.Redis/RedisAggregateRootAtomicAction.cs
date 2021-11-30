@@ -57,7 +57,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             }
             catch (Exception ex)
             {
-                logger.ErrorException("Unable to execute action", ex);
+                logger.ErrorException(ex, () => "Unable to execute action");
                 return Result.Error(ex);
             }
             finally
@@ -137,7 +137,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             }
             catch (Exception ex)
             {
-                logger.ErrorException("Unable to unlock", ex);
+                logger.ErrorException(ex, () => "Unable to unlock");
             }
         }
 
