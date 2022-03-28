@@ -1,3 +1,10 @@
+# [7.0.0-preview.4](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v7.0.0-preview.3...v7.0.0-preview.4) (2022-03-28)
+
+
+### Bug Fixes
+
+* Updates packages ([a378c7a](https://github.com/Elders/Cronus.AtomicAction.Redis/commit/a378c7a2a4afcf6501bd10f6882d8f393f328d09))
+
 # [7.0.0-preview.3](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v7.0.0-preview.2...v7.0.0-preview.3) (2022-03-28)
 
 
