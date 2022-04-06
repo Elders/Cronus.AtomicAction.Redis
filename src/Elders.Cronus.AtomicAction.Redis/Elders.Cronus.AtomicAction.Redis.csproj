@@ -1,40 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <!--Nuget-->
   <PropertyGroup>
     <PackageId>Cronus.AtomicAction.Redis</PackageId>
+
     <Product>Cronus</Product>
     <Title>Cronus</Title>
-    <Authors>Elders OSS</Authors>
-    <Copyright>Copyright © Elders OSS 2013-2020</Copyright>
-    <Description>Cronus is a lightweight framework for building event driven systems with DDD/CQRS in mind</Description>
-    <PackageTags>CQRS DDD ES Event store sourcing</PackageTags>
-    <PackageLicenseUrl>https://github.com/Elders/Cronus/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/Elders/Cronus</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Elders/Cronus.AtomicAction.Redis</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
+    <Description>Cronus is a lightweight framework for building event driven systems with DDD/CQRS in mind.</Description>
+    <PackageTags>CQRS DDD ES Event store sourcing cronus</PackageTags>
+
+    <Copyright>Copyright © Elders OSS 2013-2022</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
+
+    <ReleaseNotes>https://github.com/Elders/Cronus.AtomicAction.Redis/blob/preview/CHANGELOG.md</ReleaseNotes>
+
     <PackageIconUrl>https://raw.githubusercontent.com/Elders/logo/master/cronus/frame.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Elders/Cronus.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Elders/Cronus</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+
     <AssemblyName>Elders.Cronus.AtomicAction.Redis</AssemblyName>
+    <RootNamespace>Elders.Cronus.AtomicAction.Redis</RootNamespace>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <AssemblyVersion>6.0.0</AssemblyVersion>
+    <AssemblyVersion>7.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus" Version="6.1.0" />
-    <PackageReference Include="RedLock" Version="5.0.0" />
+    <PackageReference Include="Cronus" Version="7.0.0" />
+    <PackageReference Include="RedLock" Version="6.1.0" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <DebugType>portable</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-    <EmbedSources>true</EmbedSources>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 </Project>
