@@ -1,3 +1,12 @@
+# [7.0.0](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v6.2.0...v7.0.0) (2022-04-06)
+
+
+### Bug Fixes
+
+* Update Cronus ([a93f7e8](https://github.com/Elders/Cronus.AtomicAction.Redis/commit/a93f7e86851ec34b3a4457bbdd0e7383f32cc1a7))
+* Updates packages ([a378c7a](https://github.com/Elders/Cronus.AtomicAction.Redis/commit/a378c7a2a4afcf6501bd10f6882d8f393f328d09))
+* Updates packages ([a668394](https://github.com/Elders/Cronus.AtomicAction.Redis/commit/a6683947708a3238d93da50e941e5d815acfb56a))
+
 # [7.0.0-preview.4](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v7.0.0-preview.3...v7.0.0-preview.4) (2022-03-28)
 
 
