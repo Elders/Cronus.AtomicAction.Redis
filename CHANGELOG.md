@@ -1,3 +1,5 @@
+# [8.0.0](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v7.0.0...v8.0.0) (2022-05-25)
+
 # [7.0.0](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v6.2.0...v7.0.0) (2022-04-06)
 
 
