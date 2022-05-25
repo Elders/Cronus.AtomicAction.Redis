@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.Userfull;
@@ -28,9 +29,9 @@ namespace Elders.Cronus.AtomicAction.Redis
             this.options = options.CurrentValue;
         }
 
-        public Result<bool> Execute(IAggregateRootId arId, int aggregateRootRevision, Action action)
+        public async Task<Result<bool>> ExecuteAsync(IAggregateRootId arId, int aggregateRootRevision, Func<Task> action)
         {
-            var lockResult = Lock(arId, options.LockTtl);
+            var lockResult = await LockAsync(arId, options.LockTtl).ConfigureAwait(false);
             if (lockResult.IsNotSuccessful)
                 return Result.Error($"Lock failed becouse of: {lockResult.Errors?.MakeJustOneException()}");
 
@@ -40,7 +41,7 @@ namespace Elders.Cronus.AtomicAction.Redis
                 var canExecuteActionResult = CanExecuteAction(arId, aggregateRootRevision);
                 if (canExecuteActionResult.IsSuccessful == true)
                 {
-                    var actionResult = ExecuteAction(action);
+                    var actionResult = await ExecuteActionAsync(action).ConfigureAwait(false);
 
                     if (actionResult.IsNotSuccessful)
                     {
@@ -62,17 +63,17 @@ namespace Elders.Cronus.AtomicAction.Redis
             }
             finally
             {
-                Unlock(lockResult.Value);
+                await UnlockAsync(lockResult.Value).ConfigureAwait(false);
             }
         }
 
-        private Result<string> Lock(IAggregateRootId arId, TimeSpan ttl)
+        private async Task<Result<string>> LockAsync(IAggregateRootId arId, TimeSpan ttl)
         {
             try
             {
                 var resource = Convert.ToBase64String(arId.RawId);
 
-                if (aggregateRootLock.Lock(resource, ttl) == false)
+                if (await aggregateRootLock.LockAsync(resource, ttl).ConfigureAwait(false) == false)
                     return new Result<string>().WithError($"Failed to lock aggregate with id: {arId.Value}");
 
                 return new Result<string>(resource);
@@ -109,11 +110,11 @@ namespace Elders.Cronus.AtomicAction.Redis
             return revisionStore.SaveRevision(arId, newRevision, options.ShorTtl);
         }
 
-        private Result<bool> ExecuteAction(Action action)
+        private async Task<Result<bool>> ExecuteActionAsync(Func<Task> action)
         {
             try
             {
-                action();
+                await action().ConfigureAwait(false);
                 return Result.Success;
             }
             catch (Exception ex)
@@ -127,13 +128,13 @@ namespace Elders.Cronus.AtomicAction.Redis
             revisionStore.SaveRevision(arId, revision, options.LongTtl);
         }
 
-        private void Unlock(string resource)
+        private async Task UnlockAsync(string resource)
         {
             if (string.IsNullOrEmpty(resource)) return;
 
             try
             {
-                aggregateRootLock.Unlock(resource);
+                await aggregateRootLock.UnlockAsync(resource).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

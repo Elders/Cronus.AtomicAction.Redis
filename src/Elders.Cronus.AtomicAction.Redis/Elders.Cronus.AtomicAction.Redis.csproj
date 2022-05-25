@@ -27,12 +27,12 @@
     <RootNamespace>Elders.Cronus.AtomicAction.Redis</RootNamespace>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <AssemblyVersion>7.0.0</AssemblyVersion>
+    <AssemblyVersion>8.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus" Version="7.0.0" />
-    <PackageReference Include="RedLock" Version="6.1.0" />
+    <PackageReference Include="Cronus" Version="8.0.1" />
+    <PackageReference Include="RedLock" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>

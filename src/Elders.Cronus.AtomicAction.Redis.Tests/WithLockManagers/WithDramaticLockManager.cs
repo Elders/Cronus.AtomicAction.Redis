@@ -10,7 +10,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WithLockManagers
         Establish context = () =>
         {
             lockManager = A.Fake<ILock>();
-            A.CallTo(() => lockManager.Lock(A<string>._, A<TimeSpan>._)).Throws(new Exception(message));
+            A.CallTo(() => lockManager.LockAsync(A<string>._, A<TimeSpan>._)).Throws(new Exception(message));
             service = TestAtomicActionFactory.New(lockManager, A.Fake<IRevisionStore>());
         };
 

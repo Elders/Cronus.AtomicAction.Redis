@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.Userfull;
@@ -17,13 +18,13 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenTheActionFails
             A.CallTo(() => revisionStore.GetRevision(id)).Returns(new Result<int>(1));
 
             lockManager = A.Fake<ILock>();
-            A.CallTo(() => lockManager.Lock(Convert.ToBase64String(id.RawId), A<TimeSpan>.Ignored)).Returns(true);
+            A.CallTo(() => lockManager.LockAsync(Convert.ToBase64String(id.RawId), A<TimeSpan>.Ignored)).Returns(true);
 
             options = new RedisAtomicActionOptionsMonitorMock().CurrentValue;
             service = TestAtomicActionFactory.New(lockManager, revisionStore);
         };
 
-        Because of = () => result = service.Execute(id, 2, action);
+        Because of = async () => result = await service.ExecuteAsync(id, 2, action);
 
         It should_return__false__as_a_result = () => result.Value.ShouldBeFalse();
         It should_have_an_exception_produced = () => result.Errors.ShouldNotBeEmpty();
@@ -41,7 +42,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenTheActionFails
                 .MustNotHaveHappened();
 
 
-        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.Unlock(Convert.ToBase64String(id.RawId))).MustHaveHappened();
+        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.UnlockAsync(Convert.ToBase64String(id.RawId))).MustHaveHappened();
 
         static TestId id = new TestId();
         static ILock lockManager;
@@ -50,7 +51,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenTheActionFails
         static IAggregateRootAtomicAction service;
         static bool actionExecuted = false;
         static RedisAtomicActionOptions options;
-        static Action action = () =>
+        static Func<Task> action = () =>
         {
             actionExecuted = true;
             throw new Exception();

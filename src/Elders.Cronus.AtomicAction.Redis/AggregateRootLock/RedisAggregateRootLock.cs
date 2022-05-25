@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Elders.RedLock;
 
 namespace Elders.Cronus.AtomicAction.Redis.AggregateRootLock
@@ -14,27 +15,25 @@ namespace Elders.Cronus.AtomicAction.Redis.AggregateRootLock
             this.lockManager = lockManager;
         }
 
-        public bool IsLocked(string resource)
+        public Task<bool> IsLockedAsync(string resource)
         {
             if (string.IsNullOrEmpty(resource)) throw new ArgumentNullException(nameof(resource));
 
-            return lockManager.IsLocked(resource);
+            return lockManager.IsLockedAsync(resource);
         }
 
-        public bool Lock(string resource, TimeSpan ttl)
+        public Task<bool> LockAsync(string resource, TimeSpan ttl)
         {
             if (string.IsNullOrEmpty(resource)) throw new ArgumentNullException(nameof(resource));
 
-            var lockresult = lockManager.Lock(resource, ttl);
-
-            return lockresult;
+            return lockManager.LockAsync(resource, ttl);
         }
 
-        public void Unlock(string resource)
+        public Task UnlockAsync(string resource)
         {
             if (string.IsNullOrEmpty(resource)) throw new ArgumentNullException(nameof(resource));
 
-            lockManager.Unlock(resource);
+            return lockManager.UnlockAsync(resource);
         }
     }
 }

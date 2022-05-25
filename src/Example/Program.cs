@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Elders.Cronus;
 using Elders.Cronus.AtomicAction;
 using Elders.Cronus.AtomicAction.Redis;
@@ -36,10 +37,11 @@ namespace Example
             {
                 System.Threading.Thread.Sleep(100);
                 Console.Clear();
-                var result = atomicAction.Execute(id, revision++, () =>
+                var result = atomicAction.ExecuteAsync(id, revision++, () =>
                 {
                     Console.WriteLine($"{DateTime.Now.TimeOfDay}-{id}");
-                });
+                    return Task.CompletedTask;
+                }).GetAwaiter().GetResult();
 
                 Console.WriteLine($"{DateTime.Now.TimeOfDay}-{result.IsSuccessful}");
             }

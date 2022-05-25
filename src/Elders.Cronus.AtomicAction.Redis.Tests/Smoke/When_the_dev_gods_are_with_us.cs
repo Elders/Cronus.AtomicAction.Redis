@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.Userfull;
@@ -10,11 +11,11 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.Smoke
     [Subject("Redis Atomic Action")]
     public class When_the_dev_gods_are_with_us
     {
-        Establish context = () =>
+        Establish context = async () =>
         {
             id = new TestId();
             lockManager = A.Fake<ILock>();
-            A.CallTo(() => lockManager.Lock(Convert.ToBase64String(id.RawId), A<TimeSpan>.Ignored)).Returns(true);
+            A.CallTo(() => lockManager.LockAsync(A<string>._, A<TimeSpan>._)).Returns(true);
 
             revisionStore = A.Fake<IRevisionStore>();
             A.CallTo(() => revisionStore.HasRevision(id)).Returns(new Result<bool>(false));
@@ -24,7 +25,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.Smoke
             service = TestAtomicActionFactory.New(lockManager, revisionStore);
         };
 
-        Because of = () => result = service.Execute(id, revision, action);
+        Because of = async () => result = await service.ExecuteAsync(id, revision, task);
 
         It should_return__true__as_a_result = () => result.IsSuccessful.ShouldBeTrue();
         It should_not_have_an_exception_recorded = () => result.Errors.ShouldBeEmpty();
@@ -42,7 +43,8 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.Smoke
                 .MustHaveHappened();
 
         It should_execute_the_given_action = () => actionExecuted.ShouldBeTrue();
-        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.Unlock(Convert.ToBase64String(id.RawId))).MustHaveHappened();
+
+        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.UnlockAsync(Convert.ToBase64String(id.RawId))).MustHaveHappened();
 
         static int revision = 2;
         static TestId id;
@@ -50,7 +52,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.Smoke
         static IRevisionStore revisionStore;
         static IAggregateRootAtomicAction service;
         static Result<bool> result;
-        static Action action = () => { actionExecuted = true; };
+        static Func<Task> task = () => { actionExecuted = true; return Task.CompletedTask; };
         static bool actionExecuted = false;
         static RedisAtomicActionOptions options;
     }
