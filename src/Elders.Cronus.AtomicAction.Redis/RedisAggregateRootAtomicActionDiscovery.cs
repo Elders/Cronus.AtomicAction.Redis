@@ -17,9 +17,9 @@ namespace Elders.Cronus.AtomicAction.Redis
 
         IEnumerable<DiscoveredModel> GetModels(DiscoveryContext context)
         {
-            yield return new DiscoveredModel(typeof(IAggregateRootAtomicAction), typeof(RedisAggregateRootAtomicAction), ServiceLifetime.Transient);
+            yield return new DiscoveredModel(typeof(IAggregateRootAtomicAction), typeof(RedisAggregateRootAtomicAction), ServiceLifetime.Transient) { CanOverrideDefaults = true };
             yield return new DiscoveredModel(typeof(IRedisLockManager), typeof(RedisLockManager), ServiceLifetime.Singleton);
-            yield return new DiscoveredModel(typeof(ILock), typeof(AggregateRootLock.RedisAggregateRootLock), ServiceLifetime.Transient);
+            yield return new DiscoveredModel(typeof(ILock), typeof(AggregateRootLock.RedisAggregateRootLock), ServiceLifetime.Transient) { CanOverrideDefaults = true };
             yield return new DiscoveredModel(typeof(IRevisionStore), typeof(RedisRevisionStore), ServiceLifetime.Singleton);
         }
     }
