@@ -1,3 +1,10 @@
+## [8.0.1](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v8.0.0...v8.0.1) (2022-06-24)
+
+
+### Bug Fixes
+
+* Override default ILoc and IAggregateRootAtomicAction implementations ([79e1db4](https://github.com/Elders/Cronus.AtomicAction.Redis/commit/79e1db41c8e048ecc2c32ec025c7ed85b22ebea6))
+
 # [8.0.0](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v7.0.0...v8.0.0) (2022-05-25)
 
 # [7.0.0](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v6.2.0...v7.0.0) (2022-04-06)
