@@ -1,3 +1,10 @@
+## [8.0.2](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v8.0.1...v8.0.2) (2022-08-16)
+
+
+### Bug Fixes
+
+* pipeline update ([7a2f693](https://github.com/Elders/Cronus.AtomicAction.Redis/commit/7a2f69327a7fe993a36cab75f207a60be6293b36))
+
 ## [8.0.1](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v8.0.0...v8.0.1) (2022-06-24)
 
 
