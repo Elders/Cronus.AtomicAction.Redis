@@ -12,14 +12,14 @@ namespace Elders.Cronus.AtomicAction.Redis
         protected override DiscoveryResult<IAggregateRootAtomicAction> DiscoverFromAssemblies(DiscoveryContext context)
         {
             return new DiscoveryResult<IAggregateRootAtomicAction>(GetModels(context), services => services.AddOptions<RedisAtomicActionOptions, RedisAtomicActionOptionsProvider>()
-                                                                                                           .AddOptions<RedLockOptions, RedLockOptionsProvider>());
+                                                                                          .AddOptions<RedLockOptions, RedLockOptionsProvider>());
         }
 
         IEnumerable<DiscoveredModel> GetModels(DiscoveryContext context)
         {
-            yield return new DiscoveredModel(typeof(IAggregateRootAtomicAction), typeof(RedisAggregateRootAtomicAction), ServiceLifetime.Transient) { CanOverrideDefaults = true };
+            yield return new DiscoveredModel(typeof(IAggregateRootAtomicAction), typeof(RedisAggregateRootAtomicAction), ServiceLifetime.Singleton) { CanOverrideDefaults = true };
             yield return new DiscoveredModel(typeof(IRedisLockManager), typeof(RedisLockManager), ServiceLifetime.Singleton);
-            yield return new DiscoveredModel(typeof(ILock), typeof(AggregateRootLock.RedisAggregateRootLock), ServiceLifetime.Transient) { CanOverrideDefaults = true };
+            yield return new DiscoveredModel(typeof(ILock), typeof(AggregateRootLock.RedisAggregateRootLock), ServiceLifetime.Singleton) { CanOverrideDefaults = true };
             yield return new DiscoveredModel(typeof(IRevisionStore), typeof(RedisRevisionStore), ServiceLifetime.Singleton);
         }
     }

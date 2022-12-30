@@ -6,7 +6,7 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
     /// <summary>
     /// Provides storage for aggregate revisions.
     /// </summary>
-    public interface IRevisionStore : IDisposable
+    public interface IRevisionStore
     {
         Result<bool> HasRevision(IAggregateRootId aggregateRootId);
 

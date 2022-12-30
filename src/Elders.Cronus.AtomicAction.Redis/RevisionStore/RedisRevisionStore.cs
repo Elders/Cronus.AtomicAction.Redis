@@ -7,7 +7,7 @@ using StackExchange.Redis;
 
 namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
 {
-    public class RedisRevisionStore : IRevisionStore
+    public class RedisRevisionStore : IRevisionStore, IDisposable
     {
         private ConnectionMultiplexer connection;
 
@@ -28,7 +28,7 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
 
         public Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision, TimeSpan? expiry)
         {
-            if (ReferenceEquals(null, aggregateRootId)) throw new ArgumentNullException(nameof(aggregateRootId));
+            if (aggregateRootId is null) throw new ArgumentNullException(nameof(aggregateRootId));
 
             if (connection.IsConnected == false)
                 return Result.Error($"Unreachable endpoint '{connection.ClientName}'.");
@@ -49,7 +49,7 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
 
         public Result<int> GetRevision(IAggregateRootId aggregateRootId)
         {
-            if (ReferenceEquals(null, aggregateRootId)) throw new ArgumentNullException(nameof(aggregateRootId));
+            if (aggregateRootId is null) throw new ArgumentNullException(nameof(aggregateRootId));
 
             if (connection.IsConnected == false)
                 return new Result<int>().WithError($"Unreachable endpoint '{connection.ClientName}'.");

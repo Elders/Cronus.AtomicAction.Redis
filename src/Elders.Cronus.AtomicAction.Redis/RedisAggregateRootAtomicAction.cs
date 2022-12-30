@@ -10,23 +10,21 @@ namespace Elders.Cronus.AtomicAction.Redis
 {
     public class RedisAggregateRootAtomicAction : IAggregateRootAtomicAction
     {
-        static readonly ILogger logger = CronusLogger.CreateLogger(typeof(RedisAggregateRootAtomicAction));
-
         private IRevisionStore revisionStore;
-
         private ILock aggregateRootLock;
-
         private RedisAtomicActionOptions options;
+        private readonly ILogger<RedisAggregateRootAtomicAction> logger;
 
-        public RedisAggregateRootAtomicAction(ILock aggregateRootLock, IRevisionStore revisionStore, IOptionsMonitor<RedisAtomicActionOptions> options)
+        public RedisAggregateRootAtomicAction(ILock aggregateRootLock, IRevisionStore revisionStore, IOptionsMonitor<RedisAtomicActionOptions> options, ILogger<RedisAggregateRootAtomicAction> logger)
         {
-            if (ReferenceEquals(null, aggregateRootLock)) throw new ArgumentNullException(nameof(aggregateRootLock));
-            if (ReferenceEquals(null, revisionStore)) throw new ArgumentNullException(nameof(revisionStore));
+            if (aggregateRootLock is null) throw new ArgumentNullException(nameof(aggregateRootLock));
+            if (revisionStore is null) throw new ArgumentNullException(nameof(revisionStore));
             if (ReferenceEquals(null, options)) throw new ArgumentNullException(nameof(options));
 
             this.aggregateRootLock = aggregateRootLock;
             this.revisionStore = revisionStore;
             this.options = options.CurrentValue;
+            this.logger = logger;
         }
 
         public async Task<Result<bool>> ExecuteAsync(IAggregateRootId arId, int aggregateRootRevision, Func<Task> action)
