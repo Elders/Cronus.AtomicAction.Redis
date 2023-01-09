@@ -1,111 +1,94 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.Userfull;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
 namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
 {
-    public class RedisRevisionStore : IRevisionStore, IDisposable
+    internal class RedisRevisionStore : IRevisionStore, IDisposable
     {
-        private ConnectionMultiplexer connection;
+        private ConnectionMultiplexer connectionDoNotUse;
+        private readonly RedisAtomicActionOptions options;
+        private readonly ILogger<RedisRevisionStore> logger;
 
-        /// <summary>
-        /// This must be SINGLETON because we are doing => connection = ConnectionMultiplexer.Connect(configurationOptions);
-        /// </summary>
-        public RedisRevisionStore(IOptionsMonitor<RedisAtomicActionOptions> options)
+        public RedisRevisionStore(IOptionsMonitor<RedisAtomicActionOptions> options, ILogger<RedisRevisionStore> logger)
         {
-            var configurationOptions = ConfigurationOptions.Parse(options.CurrentValue.ConnectionString);
-
-            connection = ConnectionMultiplexer.Connect(configurationOptions);
+            this.options = options.CurrentValue;
+            this.logger = logger;
         }
 
-        public Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision)
+        public async Task<Result<bool>> SaveRevisionAsync(string resource, int revision, TimeSpan expiry)
         {
-            return SaveRevision(aggregateRootId, revision, null);
-        }
+            if (string.IsNullOrEmpty(resource)) throw new ArgumentNullException(nameof(resource));
 
-        public Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision, TimeSpan? expiry)
-        {
-            if (aggregateRootId is null) throw new ArgumentNullException(nameof(aggregateRootId));
-
-            if (connection.IsConnected == false)
-                return Result.Error($"Unreachable endpoint '{connection.ClientName}'.");
-
-            var revisionKey = CreateRedisRevisionKey(aggregateRootId);
-
-            try
+            return await ExecuteAsync(async (conn) =>
             {
-                var result = connection.GetDatabase().StringSet(revisionKey, string.Join(",", revision, DateTime.UtcNow), expiry);
+                string revisionKey = CreateRedisRevisionKey(resource);
+
+                bool result = await conn.GetDatabase().StringSetAsync(revisionKey, revision, expiry).ConfigureAwait(false);
 
                 return new Result<bool>(result);
-            }
-            catch (Exception ex)
-            {
-                return Result.Error(ex);
-            }
+            });
         }
 
-        public Result<int> GetRevision(IAggregateRootId aggregateRootId)
+        public async Task<Result<int>> PrepareRevisionAsync(string resource, int revision)
         {
-            if (aggregateRootId is null) throw new ArgumentNullException(nameof(aggregateRootId));
+            if (string.IsNullOrEmpty(resource)) throw new ArgumentNullException(nameof(resource));
 
-            if (connection.IsConnected == false)
-                return new Result<int>().WithError($"Unreachable endpoint '{connection.ClientName}'.");
-
-            var revisionKey = CreateRedisRevisionKey(aggregateRootId);
-
-            try
+            return await ExecuteAsync(async (conn) =>
             {
-                var value = connection.GetDatabase().StringGet(revisionKey);
+                string revisionKey = CreateRedisRevisionKey(resource);
+
+                var value = await conn.GetDatabase().StringSetAndGetAsync(revisionKey, revision, options.LongTtl, When.Always, CommandFlags.DemandMaster).ConfigureAwait(false);
                 if (value.HasValue == false)
-                    return new Result<int>().WithError($"Missing value for {revisionKey} '{connection.ClientName}'.");
-                var revisionValue = ((string)value).Split(',').First();
+                    return new Result<int>(0);
 
-                return new Result<int>(int.Parse(revisionValue));
-            }
-            catch (Exception ex)
-            {
-                return new Result<int>().WithError(ex);
-            }
-        }
-
-        public Result<bool> HasRevision(IAggregateRootId aggregateRootId)
-        {
-            if (ReferenceEquals(null, aggregateRootId)) throw new ArgumentNullException(nameof(aggregateRootId));
-
-            if (connection.IsConnected == false)
-                return Result.Error($"Unreachable endpoint '{connection.ClientName}'.");
-
-            var revisionKey = CreateRedisRevisionKey(aggregateRootId);
-
-            try
-            {
-                var result = connection.GetDatabase().KeyExists(revisionKey);
-
-                return new Result<bool>(result);
-            }
-            catch (Exception ex)
-            {
-                return Result.Error(ex);
-            }
+                return new Result<int>((int)value);
+            });
         }
 
         public void Dispose()
         {
-            if (connection != null)
+            if (connectionDoNotUse != null)
             {
-                connection.Dispose();
-                connection = null;
+                connectionDoNotUse.Dispose();
+                connectionDoNotUse = null;
             }
         }
 
-        private string CreateRedisRevisionKey(IAggregateRootId aggregateRootId)
+        private async Task<Result<T>> ExecuteAsync<T>(Func<ConnectionMultiplexer, Task<Result<T>>> theLogic)
         {
-            var stringRawId = Convert.ToBase64String(aggregateRootId.RawId);
+            if (connectionDoNotUse is null || (connectionDoNotUse.IsConnected == false && connectionDoNotUse.IsConnecting == false))
+            {
+                try
+                {
+                    var configurationOptions = ConfigurationOptions.Parse(options.ConnectionString);
+                    connectionDoNotUse = await ConnectionMultiplexer.ConnectAsync(configurationOptions);
+                }
+                catch (Exception ex)
+                {
+                    logger.ErrorException(ex, () => $"Unable to establish connection with Redis: {options.ConnectionString}");
+                    return Result<T>.FromError(ex);
+                }
+            }
 
-            return string.Concat("revision-", stringRawId);
+            try
+            {
+                return await theLogic(connectionDoNotUse).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                logger.ErrorException(ex, () => $"Unable to execute Redis query.");
+
+                return Result<T>.FromError(ex);
+            }
         }
+
+        private string CreateRedisRevisionKey(string resource) => $"rev:{resource}";
+
     }
 }

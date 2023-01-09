@@ -18,8 +18,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.Smoke
             A.CallTo(() => lockManager.LockAsync(A<string>._, A<TimeSpan>._)).Returns(true);
 
             revisionStore = A.Fake<IRevisionStore>();
-            A.CallTo(() => revisionStore.HasRevision(id)).Returns(new Result<bool>(false));
-            A.CallTo(() => revisionStore.GetRevision(id)).Returns(new Result<int>(revision - 1));
+            A.CallTo(() => revisionStore.PrepareRevisionAsync(id.ToBase64(), 2)).Returns(new Result<int>(1));
 
             options = new RedisAtomicActionOptionsMonitorMock().CurrentValue;
             service = TestAtomicActionFactory.New(lockManager, revisionStore);
@@ -30,21 +29,13 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.Smoke
         It should_return__true__as_a_result = () => result.IsSuccessful.ShouldBeTrue();
         It should_not_have_an_exception_recorded = () => result.Errors.ShouldBeEmpty();
 
-        It should_try_to_stored_the_previous_revision = () =>
-            A.CallTo(() => revisionStore.SaveRevision(id, revision - 1, options.ShorTtl))
-                .MustHaveHappened();
-
-        It should_try_to_increment_the_stored_revision = () =>
-            A.CallTo(() => revisionStore.SaveRevision(id, revision, options.ShorTtl))
-                .MustHaveHappened();
-
-        It should_try_to_persist_the_revision_for_a_long_period = () =>
-            A.CallTo(() => revisionStore.SaveRevision(id, revision, options.LongTtl))
+        It should_try_to_stored_the_current_revision = () =>
+            A.CallTo(() => revisionStore.PrepareRevisionAsync(id.ToBase64(), revision))
                 .MustHaveHappened();
 
         It should_execute_the_given_action = () => actionExecuted.ShouldBeTrue();
 
-        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.UnlockAsync(Convert.ToBase64String(id.RawId))).MustHaveHappened();
+        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.UnlockAsync(id.ToBase64())).MustHaveHappened();
 
         static int revision = 2;
         static TestId id;
