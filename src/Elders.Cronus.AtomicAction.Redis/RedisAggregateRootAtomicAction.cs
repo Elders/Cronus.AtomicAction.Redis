@@ -27,7 +27,7 @@ namespace Elders.Cronus.AtomicAction.Redis
             this.logger = logger;
         }
 
-        public async Task<Result<bool>> ExecuteAsync(IAggregateRootId arId, int aggregateRootRevision, Func<Task> action)
+        public async Task<Result<bool>> ExecuteAsync(AggregateRootId arId, int aggregateRootRevision, Func<Task> action)
         {
             string resource = Convert.ToBase64String(arId.RawId);
 
