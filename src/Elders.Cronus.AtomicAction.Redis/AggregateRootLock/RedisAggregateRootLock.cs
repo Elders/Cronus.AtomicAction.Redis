@@ -4,13 +4,13 @@ using Elders.RedLock;
 
 namespace Elders.Cronus.AtomicAction.Redis.AggregateRootLock
 {
-    public class RedisAggregateRootLock : ILock
+    public sealed class RedisAggregateRootLock : ILock
     {
-        private IRedisLockManager lockManager;
+        private readonly IRedisLockManager lockManager;
 
         public RedisAggregateRootLock(IRedisLockManager lockManager)
         {
-            if (ReferenceEquals(null, lockManager)) throw new ArgumentNullException(nameof(lockManager));
+            if (lockManager is null) throw new ArgumentNullException(nameof(lockManager));
 
             this.lockManager = lockManager;
         }

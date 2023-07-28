@@ -13,9 +13,8 @@ namespace Elders.Cronus.AtomicAction.Redis
         private IRevisionStore revisionStore;
         private ILock aggregateRootLock;
         private RedisAtomicActionOptions options;
-        private readonly ILogger<RedisAggregateRootAtomicAction> logger;
 
-        public RedisAggregateRootAtomicAction(ILock aggregateRootLock, IRevisionStore revisionStore, IOptionsMonitor<RedisAtomicActionOptions> options, ILogger<RedisAggregateRootAtomicAction> logger)
+        public RedisAggregateRootAtomicAction(ILock aggregateRootLock, IRevisionStore revisionStore, IOptionsMonitor<RedisAtomicActionOptions> options)
         {
             if (aggregateRootLock is null) throw new ArgumentNullException(nameof(aggregateRootLock));
             if (revisionStore is null) throw new ArgumentNullException(nameof(revisionStore));
@@ -24,7 +23,6 @@ namespace Elders.Cronus.AtomicAction.Redis
             this.aggregateRootLock = aggregateRootLock;
             this.revisionStore = revisionStore;
             this.options = options.CurrentValue;
-            this.logger = logger;
         }
 
         public async Task<Result<bool>> ExecuteAsync(AggregateRootId arId, int aggregateRootRevision, Func<Task> action)

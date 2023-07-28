@@ -9,7 +9,7 @@ using StackExchange.Redis;
 
 namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
 {
-    internal class RedisRevisionStore : IRevisionStore, IDisposable
+    internal sealed class RedisRevisionStore : IRevisionStore, IDisposable
     {
         private ConnectionMultiplexer connectionDoNotUse;
         private readonly RedisAtomicActionOptions options;
@@ -21,11 +21,11 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
             this.logger = logger;
         }
 
-        public async Task<Result<bool>> SaveRevisionAsync(string resource, int revision, TimeSpan expiry)
+        public Task<Result<bool>> SaveRevisionAsync(string resource, int revision, TimeSpan expiry)
         {
             if (string.IsNullOrEmpty(resource)) throw new ArgumentNullException(nameof(resource));
 
-            return await ExecuteAsync(async (conn) =>
+            return ExecuteAsync(async (conn) =>
             {
                 string revisionKey = CreateRedisRevisionKey(resource);
 
@@ -35,11 +35,11 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
             });
         }
 
-        public async Task<Result<int>> PrepareRevisionAsync(string resource, int revision)
+        public Task<Result<int>> PrepareRevisionAsync(string resource, int revision)
         {
             if (string.IsNullOrEmpty(resource)) throw new ArgumentNullException(nameof(resource));
 
-            return await ExecuteAsync(async (conn) =>
+            return ExecuteAsync(async (conn) =>
             {
                 string revisionKey = CreateRedisRevisionKey(resource);
 
