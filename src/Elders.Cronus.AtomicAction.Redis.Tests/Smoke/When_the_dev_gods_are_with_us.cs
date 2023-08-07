@@ -18,7 +18,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.Smoke
             A.CallTo(() => lockManager.LockAsync(A<string>._, A<TimeSpan>._)).Returns(true);
 
             revisionStore = A.Fake<IRevisionStore>();
-            A.CallTo(() => revisionStore.PrepareRevisionAsync(id.ToBase64(), 2)).Returns(new Result<int>(1));
+            A.CallTo(() => revisionStore.PrepareRevisionAsync(id.Value, 2)).Returns(new Result<int>(1));
 
             options = new RedisAtomicActionOptionsMonitorMock().CurrentValue;
             service = TestAtomicActionFactory.New(lockManager, revisionStore);
@@ -30,12 +30,12 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.Smoke
         It should_not_have_an_exception_recorded = () => result.Errors.ShouldBeEmpty();
 
         It should_try_to_stored_the_current_revision = () =>
-            A.CallTo(() => revisionStore.PrepareRevisionAsync(id.ToBase64(), revision))
+            A.CallTo(() => revisionStore.PrepareRevisionAsync(id.Value, revision))
                 .MustHaveHappened();
 
         It should_execute_the_given_action = () => actionExecuted.ShouldBeTrue();
 
-        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.UnlockAsync(id.ToBase64())).MustHaveHappened();
+        It should_try_to_unlock_the_mutex = () => A.CallTo(() => lockManager.UnlockAsync(id.Value)).MustHaveHappened();
 
         static int revision = 2;
         static TestId id;

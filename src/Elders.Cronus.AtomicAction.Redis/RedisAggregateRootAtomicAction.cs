@@ -27,7 +27,7 @@ namespace Elders.Cronus.AtomicAction.Redis
 
         public async Task<Result<bool>> ExecuteAsync(AggregateRootId arId, int aggregateRootRevision, Func<Task> action)
         {
-            string resource = Convert.ToBase64String(arId.RawId);
+            string resource = arId.Value;
 
             bool isArLocked = await aggregateRootLock.LockAsync(resource, options.LockTtl).ConfigureAwait(false);
             if (isArLocked)
@@ -56,7 +56,7 @@ namespace Elders.Cronus.AtomicAction.Redis
                 await aggregateRootLock.UnlockAsync(resource).ConfigureAwait(false);
             }
 
-            return new Result<bool>(false).WithError("Unable to execute action");
+            return new Result<bool>(false).WithError("Failed to lock and execute atomic action.");
         }
 
         private async Task<Result<bool>> ExecuteActionAsync(Func<Task> action)
