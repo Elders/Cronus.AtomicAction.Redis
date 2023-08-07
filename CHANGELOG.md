@@ -1,3 +1,5 @@
+# [9.0.0-preview.4](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v9.0.0-preview.3...v9.0.0-preview.4) (2023-08-07)
+
 # [9.0.0-preview.3](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v9.0.0-preview.2...v9.0.0-preview.3) (2023-07-28)
 
 
