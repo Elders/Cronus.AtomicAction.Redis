@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Elders.Cronus.Userfull;
 
 namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
@@ -6,14 +7,10 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
     /// <summary>
     /// Provides storage for aggregate revisions.
     /// </summary>
-    public interface IRevisionStore : IDisposable
+    public interface IRevisionStore
     {
-        Result<bool> HasRevision(IAggregateRootId aggregateRootId);
+        Task<Result<int>> PrepareRevisionAsync(string resource, int revision);
 
-        Result<int> GetRevision(IAggregateRootId aggregateRootId);
-
-        Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision);
-
-        Result<bool> SaveRevision(IAggregateRootId aggregateRootId, int revision, TimeSpan? expiry);
+        Task<Result<bool>> SaveRevisionAsync(string resource, int revision, TimeSpan expiry);
     }
 }

@@ -10,7 +10,7 @@ namespace Elders.Cronus.AtomicAction.Redis.Tests.WhenLockManagerFails
     [Subject("Redis Atomic Action")]
     public class When_lock_cannot_be_acquired : WithLockManagerFailingToAcquireLock
     {
-        Because of = async () => result = await service.ExecuteAsync(A.Fake<IAggregateRootId>(), 1, action);
+        Because of = async () => result = await service.ExecuteAsync(new AggregateRootId("elders", "testar", "123qwe"), 1, action);
 
         It should_return__false__as_a_result = () => result.IsSuccessful.ShouldBeFalse();
         It should_not_have_exception_recorded = () => result.Errors.ShouldNotBeEmpty();

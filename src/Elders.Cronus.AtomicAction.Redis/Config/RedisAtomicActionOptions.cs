@@ -7,17 +7,26 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
 {
     public class RedisAtomicActionOptions
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "The configuration `Cronus:AtomicAction:Eedis:ConnectionString` is required. For more information see here https://github.com/Elders/Cronus/blob/master/doc/Configuration.md")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "The configuration `Cronus:AtomicAction:Redis:ConnectionString` is required. For more information see here https://github.com/Elders/Cronus/blob/master/doc/Configuration.md")]
         public string ConnectionString { get; set; }
 
+        /// <summary>
+        /// The TTL which is applied in the beginning of the execution of the atomic action.
+        /// By default it is 1 second.
+        /// </summary>
         public TimeSpan LockTtl { get; set; } = TimeSpan.FromSeconds(1);
 
-        public TimeSpan ShorTtl { get; set; } = TimeSpan.FromSeconds(1);
-
+        /// <summary>
+        /// This TTL is applied after a successful execution of the atomic action.
+        /// The reason behind this decision is to make sure that there are no other nodes/threads which
+        /// are executing an action against the specific AR + revision. If we do not do this there is a
+        /// chance some other node/thread to overwrite our last action. By default this lock lasts for
+        /// 5 seconds and it does not interrupt any other operations over the AR in normal action flow.
+        /// </summary>
         public TimeSpan LongTtl { get; set; } = TimeSpan.FromSeconds(5);
     }
 
-    public class RedisAtomicActionOptionsProvider : CronusOptionsProviderBase<RedisAtomicActionOptions>
+    internal class RedisAtomicActionOptionsProvider : CronusOptionsProviderBase<RedisAtomicActionOptions>
     {
         public RedisAtomicActionOptionsProvider(IConfiguration configuration) : base(configuration) { }
 
@@ -27,9 +36,9 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
         }
     }
 
-    public class RedLockOptionsProvider : CronusOptionsProviderBase<RedLockOptions>
+    internal class AtomicActionRedLockOptionsProvider : CronusOptionsProviderBase<RedLockOptions>
     {
-        public RedLockOptionsProvider(IConfiguration configuration) : base(configuration) { }
+        public AtomicActionRedLockOptionsProvider(IConfiguration configuration) : base(configuration) { }
 
         public override void Configure(RedLockOptions options)
         {
