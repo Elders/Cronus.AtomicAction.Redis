@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
 
   </PropertyGroup>
 
@@ -28,14 +28,14 @@
     <RootNamespace>Elders.Cronus.AtomicAction.Redis</RootNamespace>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <AssemblyVersion>9.0.0.0</AssemblyVersion>
+    <AssemblyVersion>10.0.0.0</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="RedisAggregateRootAtomicAction.cs~RF690ce2.TMP" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus" Version="9.0.1" />
+    <PackageReference Include="Cronus" Version="10.0.0-preview.1" />
     <PackageReference Include="RedLock" Version="8.2.1" />
   </ItemGroup>
 
