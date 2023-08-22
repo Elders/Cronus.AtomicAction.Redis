@@ -1,3 +1,10 @@
+## [9.0.1](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v9.0.0...v9.0.1) (2023-08-22)
+
+
+### Bug Fixes
+
+* Fixes assembly version to be 9.0.0.0 ([026cfab](https://github.com/Elders/Cronus.AtomicAction.Redis/commit/026cfab3c646e7e0408bd798580a050e9196ce51))
+
 # [9.0.0](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v8.0.2...v9.0.0) (2023-08-22)
 
 
