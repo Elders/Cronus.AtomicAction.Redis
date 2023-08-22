@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus" Version="9.0.0-preview.56" />
+    <PackageReference Include="Cronus" Version="9.0.1" />
     <PackageReference Include="RedLock" Version="8.2.1" />
   </ItemGroup>
 
