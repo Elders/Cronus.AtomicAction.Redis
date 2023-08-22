@@ -28,7 +28,7 @@
     <RootNamespace>Elders.Cronus.AtomicAction.Redis</RootNamespace>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <AssemblyVersion>8.0.0.0</AssemblyVersion>
+    <AssemblyVersion>9.0.0.0</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="RedisAggregateRootAtomicAction.cs~RF690ce2.TMP" />
