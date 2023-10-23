@@ -1,3 +1,10 @@
+# [10.0.0-preview.2](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v10.0.0-preview.1...v10.0.0-preview.2) (2023-10-23)
+
+
+### Bug Fixes
+
+* Updates packages ([7b53d7c](https://github.com/Elders/Cronus.AtomicAction.Redis/commit/7b53d7c9ed63ef462f1afe6dd1d233ed751e160b))
+
 # [10.0.0-preview.1](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v9.0.1...v10.0.0-preview.1) (2023-08-22)
 
 ## [9.0.1](https://github.com/Elders/Cronus.AtomicAction.Redis/compare/v9.0.0...v9.0.1) (2023-08-22)
