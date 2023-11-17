@@ -45,7 +45,7 @@ namespace Elders.Cronus.AtomicAction.Redis
                         }
                     }
 
-                    await revisionStore.SaveRevisionAsync(resource, lockedPrevRevision.Value, options.LongTtl).ConfigureAwait(false);
+                    await revisionStore.SaveRevisionAsync(resource, lockedPrevRevision.Value, options.LongTtl).ConfigureAwait(false); // Rollsback the revision if the revision store reports not consecutive versions.
                 }
                 else
                 {
