@@ -9,13 +9,20 @@ namespace Elders.Cronus.AtomicAction.Redis.Integration.Tests;
 [TestFixture]
 public class RedisAggregateRootLockTests
 {
+    RedisLockManager lockManager;
     RedisAggregateRootLock rootLock;
 
     [SetUp]
     public void Setup()
     {
-        var lockManager = new RedisLockManager(new RedisOptions(RedisFixture.Container.GetConnectionString()), new NullLoggerFactory().CreateLogger<RedisLockManager>());
+        lockManager = new RedisLockManager(new RedisOptions(RedisFixture.Container.GetConnectionString()), new NullLoggerFactory().CreateLogger<RedisLockManager>());
         rootLock = new RedisAggregateRootLock(lockManager);
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        lockManager?.Dispose();
     }
 
     [Test]

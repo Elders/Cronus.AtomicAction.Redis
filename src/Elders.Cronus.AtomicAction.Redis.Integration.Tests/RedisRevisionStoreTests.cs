@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Elders.Cronus.AtomicAction.Redis.Integration.Tests;
 
+[TestFixture]
 public class RedisRevisionStoreTests
 {
     RedisRevisionStore revisionStore;
@@ -13,6 +14,12 @@ public class RedisRevisionStoreTests
     public void SetUp()
     {
         revisionStore = new RedisRevisionStore(new RevisionStoreOptions(RedisFixture.Container.GetConnectionString()), NullLogger<RedisRevisionStore>.Instance);
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        revisionStore?.Dispose();
     }
 
     [Test]
