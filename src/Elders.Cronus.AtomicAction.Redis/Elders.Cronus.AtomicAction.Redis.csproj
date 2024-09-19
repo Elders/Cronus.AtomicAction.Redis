@@ -39,4 +39,7 @@
     <PackageReference Include="RedLock" Version="9.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Elders.Cronus.AtomicAction.Redis.Integration.Tests"/>
+  </ItemGroup>
 </Project>
