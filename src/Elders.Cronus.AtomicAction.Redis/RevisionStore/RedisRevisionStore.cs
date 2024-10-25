@@ -71,7 +71,7 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
                 }
                 catch (Exception ex)
                 {
-                    logger.ErrorException(ex, () => $"Unable to establish connection with Redis: {options.ConnectionString}");
+                    logger.LogError(ex, "Unable to establish connection with Redis: {connection_string}", options.ConnectionString);
                     return Result<T>.FromError(ex);
                 }
             }
@@ -82,7 +82,7 @@ namespace Elders.Cronus.AtomicAction.Redis.RevisionStore
             }
             catch (Exception ex)
             {
-                logger.ErrorException(ex, () => $"Unable to execute Redis query.");
+                logger.LogError(ex, "Unable to execute Redis query.");
 
                 return Result<T>.FromError(ex);
             }
