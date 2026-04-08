@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using Elders.RedLock;
 using Microsoft.Extensions.Configuration;
 
@@ -7,8 +6,17 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
 {
     public class RedisAtomicActionOptions
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "The configuration `Cronus:AtomicAction:Redis:ConnectionString` is required. For more information see here https://github.com/Elders/Cronus/blob/master/doc/Configuration.md")]
+        /// <summary>
+        /// Gets or sets the connection string used to establish a connection to the database.
+        /// This is an optional property. If not provided, the ConnectionName property will be used to get the connection string from ConnectionStrings configuration.
+        /// </summary>
         public string ConnectionString { get; set; }
+
+        /// <summary>
+        /// The name of the connection string to use.
+        /// By default it is "redis".
+        /// </summary>
+        public string ConnectionName { get; set; } = "redis";
 
         /// <summary>
         /// The TTL which is applied in the beginning of the execution of the atomic action.
@@ -33,6 +41,16 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
         public override void Configure(RedisAtomicActionOptions options)
         {
             configuration.GetSection("cronus:atomicaction:redis").Bind(options);
+            
+            if (string.IsNullOrEmpty(options.ConnectionString))
+            {
+                var connectionName = string.IsNullOrEmpty(options.ConnectionName) ? "redis" : options.ConnectionName;
+                var aspireConnectionString = configuration.GetConnectionString(connectionName);
+                if (!string.IsNullOrEmpty(aspireConnectionString))
+                {
+                    options.ConnectionString = aspireConnectionString;
+                }
+            }
         }
     }
 
@@ -43,6 +61,19 @@ namespace Elders.Cronus.AtomicAction.Redis.Config
         public override void Configure(RedLockOptions options)
         {
             configuration.GetSection("cronus:atomicaction:redis").Bind(options);
+            
+            if (string.IsNullOrEmpty(options.ConnectionString))
+            {
+                var redisOptions = new RedisAtomicActionOptions();
+                configuration.GetSection("cronus:atomicaction:redis").Bind(redisOptions);
+                
+                var connectionName = string.IsNullOrEmpty(redisOptions.ConnectionName) ? "redis" : redisOptions.ConnectionName;
+                var aspireConnectionString = configuration.GetConnectionString(connectionName);
+                if (!string.IsNullOrEmpty(aspireConnectionString))
+                {
+                    options.ConnectionString = aspireConnectionString;
+                }
+            }
         }
     }
 }

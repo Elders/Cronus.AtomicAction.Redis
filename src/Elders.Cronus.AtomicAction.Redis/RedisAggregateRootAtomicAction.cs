@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.AtomicAction.Redis.RevisionStore;
 using Elders.Cronus.Userfull;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Elders.Cronus.AtomicAction.Redis
@@ -16,9 +15,9 @@ namespace Elders.Cronus.AtomicAction.Redis
 
         public RedisAggregateRootAtomicAction(ILock aggregateRootLock, IRevisionStore revisionStore, IOptionsMonitor<RedisAtomicActionOptions> options)
         {
-            if (aggregateRootLock is null) throw new ArgumentNullException(nameof(aggregateRootLock));
-            if (revisionStore is null) throw new ArgumentNullException(nameof(revisionStore));
-            if (options is null) throw new ArgumentNullException(nameof(options));
+            ArgumentNullException.ThrowIfNull(aggregateRootLock);
+            ArgumentNullException.ThrowIfNull(revisionStore);
+            ArgumentNullException.ThrowIfNull(options);
 
             this.aggregateRootLock = aggregateRootLock;
             this.revisionStore = revisionStore;
